@@ -2,7 +2,7 @@ const { ObjectId } = require("mongodb");
 const postModel = require("../models/postModel");
 
 
-// see posts
+//see posts
 
 async function feed(req, res) {
     try {
@@ -19,7 +19,7 @@ async function feed(req, res) {
     }
 }
 
-// create posts
+//create posts
 
 function showCreateForm(req, res) {
     res.render("posts/create");
@@ -50,7 +50,7 @@ async function create(req, res) {
 }
 
 
-// Delete posts
+//Delete posts
 
 async function remove(req, res) {
     try {

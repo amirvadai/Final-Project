@@ -14,20 +14,20 @@ const app = express();
 const PORT = 3001;
 
 
-// Middleware
+//Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, "views", "public")));
 
-// EJS
+//EJS
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 app.use(expressLayouts);
 
 
-// Session
+//Session
 app.use(
     session({
         secret: process.env.SESSION_SECRET,
@@ -37,12 +37,12 @@ app.use(
 );
 
 
-// Routes
+//Routes
 app.use("/", authRoutes);
 app.use("/", postRoutes);
 
 
-// Start server
+//Start server
 async function startServer() {
     await connectDB();
 

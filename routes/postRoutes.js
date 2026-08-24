@@ -5,7 +5,7 @@ const router = express.Router();
 const postController = require("../controllers/postController");
 const requireAuth = require("../middleware/requireAuth");
 
-// See posts
+//See posts
 
 router.get(
     "/",
@@ -13,7 +13,7 @@ router.get(
     postController.feed
 );
 
-// Create posts
+//Create posts
 
 router.get(
     "/posts/create",
@@ -27,7 +27,7 @@ router.post(
     postController.create
 );
 
-// Delete posts
+//Delete posts
 
 router.post(
     "/posts/:id/delete",

@@ -1,7 +1,7 @@
 const { getDB } = require("../config/database");
 const { ObjectId } = require("mongodb");
 
-// Get all posts
+//Get all posts
 
 function getPosts() {
     const db = getDB();
@@ -12,7 +12,7 @@ function getPosts() {
         .toArray();
 }
 
-// Get one post
+//Get one post
 
 async function getPostById(id) {
     const db = getDB();
@@ -22,7 +22,7 @@ async function getPostById(id) {
     });
 }
 
-// Create posts
+//Create posts
 
 async function createPost(post) {
     const db = getDB();
@@ -32,7 +32,7 @@ async function createPost(post) {
     return getPostById(result.insertedId.toString());
 }
 
-// Update posts
+//Update posts
 
 async function updatePost(id, updates) {
     const db = getDB();
@@ -52,7 +52,7 @@ async function updatePost(id, updates) {
     return getPostById(id);
 }
 
-// Delete posts
+//Delete posts
 
 async function deletePost(id) {
     const db = getDB();
