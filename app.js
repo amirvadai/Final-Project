@@ -3,14 +3,16 @@ require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const session = require("express-session");
+const expressLayouts = require("express-ejs-layouts");
 
 const { connectDB } = require("./config/database");
+
 const authRoutes = require("./routes/authRoutes");
+const postRoutes = require("./routes/postRoutes");
 
 const app = express();
 const PORT = 3000;
 
-const expressLayouts = require("express-ejs-layouts");
 
 // Middleware
 app.use(express.json());
@@ -36,13 +38,7 @@ app.use(
 
 // Routes
 app.use("/", authRoutes);
-
-
-const requireAuth = require("./middleware/requireAuth");
-
-app.get("/", requireAuth, (req, res) => {
-    res.render("feed/index");
-});
+app.use("/", postRoutes);
 
 
 // Start server

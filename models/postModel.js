@@ -1,55 +1,72 @@
-const { ObjectId } = require("mongodb");
 const { getDB } = require("../config/database");
+const { ObjectId } = require("mongodb");
 
-function postsCollection() {
-    return getDB().collection("posts");
-}
+// Get all posts
 
-async function createPost(postData) {
-    const post = {
-        author: new ObjectId(postData.author),
+function getPosts() {
+    const db = getDB();
 
-        group: postData.group
-            ? new ObjectId(postData.group)
-            : null,
-
-        type: postData.type,
-
-        text: postData.text || "",
-
-        mediaUrl: postData.mediaUrl || "",
-
-        tags: postData.tags || [],
-
-        likes: [],
-
-        createdAt: new Date(),
-        updatedAt: new Date()
-    };
-
-    const result = await postsCollection().insertOne(post);
-
-    return {
-        ...post,
-        _id: result.insertedId
-    };
-}
-
-async function getPostById(id) {
-    return postsCollection().findOne({
-        _id: new ObjectId(id)
-    });
-}
-
-async function getAllPosts() {
-    return postsCollection()
+    return db.collection("posts")
         .find({})
         .sort({ createdAt: -1 })
         .toArray();
 }
 
+// Get one post
+
+async function getPostById(id) {
+    const db = getDB();
+
+    return db.collection("posts").findOne({
+        _id: new ObjectId(id)
+    });
+}
+
+// Create posts
+
+async function createPost(post) {
+    const db = getDB();
+
+    const result = await db.collection("posts").insertOne(post);
+
+    return getPostById(result.insertedId.toString());
+}
+
+// Update posts
+
+async function updatePost(id, updates) {
+    const db = getDB();
+
+    await db.collection("posts").updateOne(
+        {
+            _id: new ObjectId(id)
+        },
+        {
+            $set: {
+                ...updates,
+                updatedAt: new Date()
+            }
+        }
+    );
+
+    return getPostById(id);
+}
+
+// Delete posts
+
+async function deletePost(id) {
+    const db = getDB();
+
+    return db.collection("posts").deleteOne({
+        _id: new ObjectId(id)
+    });
+}
+
+
 module.exports = {
-    createPost,
+    getPosts,
     getPostById,
-    getAllPosts
+    createPost,
+    updatePost,
+    deletePost
 };

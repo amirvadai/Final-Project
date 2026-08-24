@@ -1,0 +1,21 @@
+<form
+    action="/posts/<%= post._id %>"
+    method="POST"
+>
+
+    <textarea
+        name="text"
+        rows="6"
+        cols="50"
+        required
+    ><%= post.text %></textarea>
+
+    <br><br>
+
+    <button type="submit">
+        Save Changes
+    </button>
+
+</form>
+
+<a href="/">Cancel</a>
