@@ -11,13 +11,14 @@ const authRoutes = require("./routes/authRoutes");
 const postRoutes = require("./routes/postRoutes");
 
 const app = express();
-const PORT = 3000;
+const PORT = 3001;
 
 
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(express.static(path.join(__dirname, "views", "public")));
 
 // EJS
 app.set("view engine", "ejs");

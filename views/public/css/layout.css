@@ -1,0 +1,170 @@
+/* Navbar, page layout, footer and responsiveness */
+
+
+body {
+    display:flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+
+/* Navigation */
+
+nav {
+    display: flex;
+    width: min(
+        calc(100% - 2rem),
+        var(--content-width)
+    );
+    min-height: 68px;
+    align-items: center;
+    gap: 0.35rem;
+    margin: 0 auto;
+    padding: 0.8rem 0;
+}
+
+nav a {
+    padding: 0.6rem 0.85rem;
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    font-size: 0.93rem;
+    font-weight: 700;
+    transition:
+        color 120ms ease,
+        background-color 120ms ease;
+}
+
+nav a:hover {
+    color: var(--text);
+    background: var(--surface);
+    text-decoration: none;
+}
+
+nav a:last-child {
+    margin-left: auto;
+    color: var(--danger);
+}
+
+nav a:last-child:hover {
+    color: var(--danger-dark);
+    background: var(--danger-light);
+}
+
+nav + hr {
+    margin: 0;
+}
+
+
+/* Main Page */
+
+main {
+    width: min(
+        calc(100% - 2rem),
+        var(--content-width)
+    );
+    flex: 1;
+    margin: 0 auto;
+    padding: 3rem 0 4rem;
+}
+
+main > body {
+    display: block;
+    min-height:auto;
+    background: transparent;
+}
+
+
+/* Create Post Link */
+
+main > a[href="/posts/create"] {
+    display: inline-flex;
+    min-height: 42px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+    padding: 0.65rem 1rem;
+    border-radius: 10px;
+    color: white;
+    background: var(--primary);
+    box-shadow:
+        0 5px 12px rgba(37, 99, 235, 0.18);
+}
+
+main > a[href="/posts/create"]:hover {
+    background: var(--primary-dark);
+    text-decoration: none;
+}
+
+
+/* Cancel button underneath create-post form */
+
+form + a[href="/"] {
+    display:inline-block;
+    margin-top: 1rem;
+}
+
+
+/* Footer */
+
+
+footer {
+    width: min(
+        calc(100% - 2rem),
+        var(--content-width)
+    );
+
+    margin: 0 auto;
+
+    padding: 1.35rem 0 2rem;
+
+    text-align: center;
+}
+
+footer p {
+    margin: 0;
+    font-size: 0.86rem;
+}
+
+footer + hr, main + hr {
+    margin:0;
+}
+
+
+/* Tablet / Mobile */
+
+@media (max-width: 650px) {
+    nav {
+        flex-wrap: wrap;
+
+        gap:0.15rem;
+    }
+    nav a {
+        padding: 0.5rem 0.6rem;
+
+        font-size: 0.86rem;
+    }
+    nav a:last-child {
+        margin-left: auto;
+    }
+    main {
+        padding-top:2rem;
+    }
+    h1 {
+        font-size:2rem;
+    }
+    article {
+        padding: 1rem;
+    }
+
+}
+
+
+@media (max-width: 420px) {
+    nav {
+        justify-content: center;
+    }
+
+    nav a:last-child {
+        margin-left:0;
+    }
+}
