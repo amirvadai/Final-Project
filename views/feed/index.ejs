@@ -1,55 +1,103 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <title>Home</title>
+
 </head>
 
 <body>
-<h1>Feed</h1>
 
-<a href="/posts/create">Create Post</a>
+    <h1>Feed</h1>
 
-<hr>
+    <a href="/posts/create">Create Post</a>
 
-<% if (posts.length === 0) { %>
+    <hr>
 
-    <p>No posts yet.</p>
 
-<% } else { %>
+    <% if (posts.length === 0) { %>
 
-    <% posts.forEach(post => { %>
+        <p>No posts yet.</p>
 
-        <article>
+    <% } else { %>
 
-            <p>
-                <%= post.text %>
-            </p>
 
-            <small>
-                <%= post.createdAt %>
-            </small>
+        <% posts.forEach(post => { %>
 
-            <% if (post.author.toString() === userId) { %>
+            <article>
 
-                <form
-                    action="/posts/<%= post._id %>/delete"
-                    method="POST"
-                >
-                    <button type="submit">
-                        Delete
-                    </button>
-                </form>
+                <!-- Post text -->
 
-            <% } %>
+                <p>
+                    <%= post.text %>
+                </p>
 
-        </article>
 
-        <hr>
+                <!-- Image -->
 
-    <% }) %>
+                <% if (post.type === "image" && post.mediaUrl) { %>
 
-<% } %>
+                    <img
+                        src="<%= post.mediaUrl %>"
+                        alt="Post image"
+                    >
+
+                <% } %>
+
+
+                <!-- Video -->
+
+                <% if (post.type === "video" && post.mediaUrl) { %>
+
+                    <video controls>
+
+                        <source src="<%= post.mediaUrl %>">
+
+                        Your browser does not support video.
+
+                    </video>
+
+                <% } %>
+
+
+                <!-- Date -->
+
+                <small>
+                    <%= post.createdAt %>
+                </small>
+
+
+                <!-- Delete -->
+
+                <% if (post.author.toString() === userId) { %>
+
+                    <form
+                        action="/posts/<%= post._id %>/delete"
+                        method="POST"
+                    >
+
+                        <button type="submit">
+                            Delete
+                        </button>
+
+                    </form>
+
+                <% } %>
+
+            </article>
+
+            <hr>
+
+        <% }) %>
+
+
+    <% } %>
+
 
 </body>
+
 </html>

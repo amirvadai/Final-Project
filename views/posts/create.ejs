@@ -1,4 +1,10 @@
-<form action="/posts" method="POST">
+<h1>Create Post</h1>
+
+<form
+    action="/posts"
+    method="POST"
+    enctype="multipart/form-data"
+>
 
     <label for="text">Post:</label>
 
@@ -14,7 +20,22 @@
 
     <br><br>
 
-    <button type="submit">Publish</button>
+    <label for="media">Image or Video:</label>
+
+    <br>
+
+    <input
+        type="file"
+        id="media"
+        name="media"
+        accept="image/*,video/*"
+    >
+
+    <br><br>
+
+    <button type="submit">
+        Publish
+    </button>
 
 </form>
 

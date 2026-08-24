@@ -29,14 +29,30 @@ function showCreateForm(req, res) {
 async function create(req, res) {
     try {
         const { text } = req.body;
+        const file = req.file;
 
         if (!text || text.trim() === "") {
             return res.status(400).send("Post cannot be empty");
         }
 
+        let type = "text";
+        let mediaUrl = null;
+
+        if (file) {
+            mediaUrl = "/uploads/" + file.filename;
+
+            if (file.mimetype.startsWith("image/")) {
+                type = "image";
+            } else if (file.mimetype.startsWith("video/")) {
+                type = "video";
+            }
+        }
+
         await postModel.createPost({
             author: new ObjectId(req.session.userId),
+            type,
             text: text.trim(),
+            mediaUrl,
             createdAt: new Date(),
             updatedAt: new Date()
         });
