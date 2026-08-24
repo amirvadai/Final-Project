@@ -12,16 +12,14 @@ async function seed() {
 
         const db = getDB();
 
-        // ניקוי הנתונים הקיימים
+        //Deleting exsisting
         await db.collection("users").deleteMany({});
         await db.collection("groups").deleteMany({});
         await db.collection("posts").deleteMany({});
 
         console.log("Old data deleted");
-
-        // =========================
-        // USERS
-        // =========================
+        
+        //Users
 
         const daniel = await userModel.createUser({
             username: "daniel",
@@ -49,9 +47,7 @@ async function seed() {
 
         console.log("Users created");
 
-        // =========================
-        // FRIENDSHIP
-        // =========================
+        //friendships
 
         await db.collection("users").updateOne(
             { _id: daniel._id },
@@ -71,9 +67,7 @@ async function seed() {
             }
         );
 
-        // =========================
-        // GROUPS
-        // =========================
+        //groups
 
         const runnersGroup = await groupModel.createGroup({
             name: "Tel Aviv Runners",
@@ -113,9 +107,7 @@ async function seed() {
 
         console.log("Groups created");
 
-        // =========================
-        // ADD MEMBERS
-        // =========================
+        //add members
 
         await db.collection("groups").updateOne(
             { _id: runnersGroup._id },
@@ -135,9 +127,7 @@ async function seed() {
             }
         );
 
-        // =========================
-        // POSTS
-        // =========================
+        //posts
 
         await postModel.createPost({
             author: daniel._id,
