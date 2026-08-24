@@ -27,7 +27,7 @@ nav a {
     padding: 0.6rem 0.85rem;
     border-radius: var(--radius-sm);
     color: var(--text-muted);
-    font-size: 0.93rem;
+    font-size: 1.2rem;
     font-weight: 700;
     transition:
         color 120ms ease,
@@ -40,12 +40,12 @@ nav a:hover {
     text-decoration: none;
 }
 
-nav a:last-child {
+nav a[href="/logout"] {
     margin-left: auto;
     color: var(--danger);
 }
 
-nav a:last-child:hover {
+nav a[href="/logout"]:hover {
     color: var(--danger-dark);
     background: var(--danger-light);
 }
@@ -54,7 +54,16 @@ nav + hr {
     margin: 0;
 }
 
+#navbar-home-btn{
+    font-size: 1.4rem;
+}
 
+nav img{
+    border-radius: 50%;
+    width:2.6rem;
+    position: absolute;
+    left:1%;
+}
 /* Main Page */
 
 main {

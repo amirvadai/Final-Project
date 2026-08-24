@@ -1,11 +1,13 @@
 <nav>
-
-    <a href="/">Home</a>
+    <a href="/" id="navbar-home-btn">City Community</a>
     <a href="/groups">Groups</a>
     <a href="/users">Users</a>
 
-    <a href="/logout">Logout</a>
+    <a href="/logout" id="navbar-logout">Logout</a>
 
+    <% if (locals.currentUser) { %>
+        <div style="display: inline-flex; align-items: center;">
+            <img src="<%= currentUser.avatarUrl %>" alt="My Profile">
+        </div>
+    <% }%>
 </nav>
-
-<hr>
