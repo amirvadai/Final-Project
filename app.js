@@ -10,6 +10,7 @@ const authRoutes = require("./routes/authRoutes");
 const app = express();
 const PORT = 3000;
 
+const expressLayouts = require("express-ejs-layouts");
 
 // Middleware
 app.use(express.json());
@@ -19,6 +20,8 @@ app.use(express.urlencoded({ extended: true }));
 // EJS
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+
+app.use(expressLayouts);
 
 
 // Session
