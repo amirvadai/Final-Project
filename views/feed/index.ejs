@@ -75,6 +75,8 @@
 
                 <% if (post.author.toString() === userId) { %>
 
+                    <a href="/posts/<%= post._id %>/edit">Edit</a>
+
                     <form
                         action="/posts/<%= post._id %>/delete"
                         method="POST"

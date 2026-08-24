@@ -60,5 +60,18 @@ router.post(
     postController.remove
 );
 
+//Update posts
+router.get(
+  "/posts/:id/edit",
+  requireAuth,
+  postController.showEditForm
+);
 
+router.post(
+  "/posts/:id",
+  requireAuth,
+  postController.update
+);
+
+//
 module.exports = router;

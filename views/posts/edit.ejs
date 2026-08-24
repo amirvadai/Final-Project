@@ -1,21 +1,20 @@
+<h1>Edit Post</h1>
 <form
-    action="/posts/<%= post._id %>"
-    method="POST"
+  action="/posts/<%= post._id %>"
+  method="POST"
 >
-
-    <textarea
-        name="text"
-        rows="6"
-        cols="50"
-        required
-    ><%= post.text %></textarea>
-
-    <br><br>
-
-    <button type="submit">
-        Save Changes
-    </button>
-
+  <label for="text">Post:</label>
+  <br>
+  <textarea
+    id="text"
+    name="text"
+    rows="6"
+    cols="50"
+    required
+  ><%= post.text %></textarea>
+  <br><br>
+  <button type="submit">Save Changes</button>
 </form>
 
+<br>
 <a href="/">Cancel</a>
