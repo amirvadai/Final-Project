@@ -30,64 +30,38 @@
 
             <article>
 
-                <!-- Post text -->
+                <div class="post-layout">
+                    <img src="<%= post.authorDetails.avatarUrl %>" alt="Avatar" class="avatar-small">
+                    <div class="post-content">
+                        <strong><%= post.authorDetails.displayName %></strong>
+                        <p><%= post.text %></p>
+                    </div>
+                </div>
 
-                <p>
-                    <%= post.text %>
-                </p>
-
-
-                <!-- Image -->
 
                 <% if (post.type === "image" && post.mediaUrl) { %>
-
-                    <img
-                        src="<%= post.mediaUrl %>"
-                        alt="Post image"
-                    >
-
+                    <img src="<%= post.mediaUrl %>" alt="Post image">
                 <% } %>
 
-
-                <!-- Video -->
 
                 <% if (post.type === "video" && post.mediaUrl) { %>
-
                     <video controls>
-
                         <source src="<%= post.mediaUrl %>">
-
-                        Your browser does not support video.
-
-                    </video>
-
+                        Your browser does not support video. </video>
                 <% } %>
-
-
-                <!-- Date -->
 
                 <small>
                     <%= post.createdAt %>
                 </small>
 
-
-                <!-- Delete -->
-
+                
                 <% if (post.author.toString() === userId) { %>
-
-                    <a href="/posts/<%= post._id %>/edit">Edit</a>
-
-                    <form
-                        action="/posts/<%= post._id %>/delete"
-                        method="POST"
-                    >
-
-                        <button type="submit">
-                            Delete
-                        </button>
-
-                    </form>
-
+                    <div class="post-actions">
+                        <a href="/posts/<%= post._id %>/edit">Edit</a>
+                        <form action="/posts/<%= post._id %>/delete" method="POST">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </div>
                 <% } %>
 
             </article>

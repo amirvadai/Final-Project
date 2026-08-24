@@ -12,7 +12,7 @@ async function createUser(userData) {
         displayName: userData.displayName,
         city: userData.city,
         interests: userData.interests || [],
-        avatarUrl: userData.avatarUrl || "",
+        avatarUrl: userData.avatarUrl || "/images/default-avatar.png",
 
         friends: [],
         incomingFriendRequests: [],

@@ -155,3 +155,33 @@ article img, article video{
     margin: 10px 0;
     border-radius: 2px;
 }
+
+.avatar-small {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 12px;
+    border: 1px solid #ddd;
+}
+
+.post-layout {
+    display: flex;
+    align-items: flex-start;
+}
+
+.post-content strong {
+    display: block;
+}
+
+.post-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.post-actions form {
+    margin-top: 0;
+    margin-bottom: 0;
+}

@@ -4,12 +4,21 @@ const { ObjectId } = require("mongodb");
 //Get all posts
 
 function getPosts() {
-    const db = getDB();
-
-    return db.collection("posts")
-        .find({})
-        .sort({ createdAt: -1 })
-        .toArray();
+  const db = getDB();
+  return db.collection("posts").aggregate([
+    { $sort: { createdAt: -1 } },
+    {
+      $lookup: {
+        from: "users",
+        localField: "author",
+        foreignField: "_id",
+        as: "authorDetails"
+      }
+    },
+    {
+      $unwind: "$authorDetails"
+    }
+  ]).toArray();
 }
 
 //Get one post

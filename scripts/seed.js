@@ -6,6 +6,8 @@ const userModel = require("../models/userModel");
 const groupModel = require("../models/groupModel");
 const postModel = require("../models/postModel");
 
+const bcrypt = require("bcrypt");
+
 async function seed() {
     try {
         await connectDB();
@@ -16,33 +18,38 @@ async function seed() {
         await db.collection("users").deleteMany({});
         await db.collection("groups").deleteMany({});
         await db.collection("posts").deleteMany({});
-
         console.log("Old data deleted");
         
+        const defaultPassword = "12345";
+        const passwordHash = await bcrypt.hash(defaultPassword, 10);
+
         //Users
 
         const daniel = await userModel.createUser({
             username: "daniel",
-            passwordHash: "TEMP_HASH",
+            passwordHash: "passwordHash",
             displayName: "Daniel Cohen",
             city: "Tel Aviv",
-            interests: ["Running", "Music", "Travel"]
+            interests: ["Running", "Music", "Travel"],
+            avatarUrl: "/images/demo/daniel-avatar.jpg"
         });
 
         const maya = await userModel.createUser({
             username: "maya",
-            passwordHash: "TEMP_HASH",
+            passwordHash: "passwordHash",
             displayName: "Maya Levi",
             city: "Jerusalem",
-            interests: ["Photography", "Art", "Travel"]
+            interests: ["Photography", "Art", "Travel"],
+            avatarUrl: "/images/demo/maya-avatar.jpg"
         });
 
         const noam = await userModel.createUser({
             username: "noam",
-            passwordHash: "TEMP_HASH",
+            passwordHash: "passwordHash",
             displayName: "Noam David",
             city: "Haifa",
-            interests: ["Gaming", "Technology"]
+            interests: ["Gaming", "Technology"],
+            avatarUrl: "/images/demo/noam-avatar.jpg"
         });
 
         console.log("Users created");
@@ -142,7 +149,7 @@ async function seed() {
             group: photographyGroup._id,
             type: "image",
             text: "Great photo from our last walk.",
-            mediaUrl: "/images/demo/photo1.jpg",
+            mediaUrl: "/images/demo/maya-post.jpg",
             tags: ["photography"]
         });
 
@@ -151,7 +158,7 @@ async function seed() {
             group: null,
             type: "video",
             text: "A short video about my latest project.",
-            mediaUrl: "/videos/demo/video1.mp4",
+            mediaUrl: "/videos/demo/noam-video.mp4",
             tags: ["technology"]
         });
 
