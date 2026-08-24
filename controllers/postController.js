@@ -87,11 +87,62 @@ async function remove(req, res) {
     }
 }
 
+//Update posts
+
+async function showEditForm(req, res) {
+  try {
+    const post = await postModel.getPostById(req.params.id);
+    
+    if (!post) {
+      return res.status(404).send("Post not found");
+    }
+    
+    if (post.author.toString() !== req.session.userId) {
+      return res.status(403).send("Not allowed to edit this post");
+    }
+    
+    res.render("posts/edit", { post: post });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server error");
+  }
+}
+
+
+async function update(req, res) {
+  try {
+    const post = await postModel.getPostById(req.params.id);
+    
+    if (!post) {
+      return res.status(404).send("Post not found");
+    }
+    
+    if (post.author.toString() !== req.session.userId) {
+      return res.status(403).send("Not allowed to edit this post");
+    }
+
+    const { text } = req.body;
+    if (!text || text.trim() === "") {
+      return res.status(400).send("Post cannot be empty");
+    }
+
+    await postModel.updatePost(req.params.id, {
+      text: text.trim()
+    });
+
+    res.redirect("/");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server error");
+  }
+}
 //
 
 module.exports = {
     feed,
     showCreateForm,
     create,
-    remove
+    remove,
+    showEditForm,
+    update
 };
