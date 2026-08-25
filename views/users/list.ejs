@@ -1,0 +1,15 @@
+<h1>Community Users</h1>
+<hr>
+
+<div style="display: flex; flex-direction: column; gap: 15px;">
+    <% users.forEach(u => { %>
+        <div style="display: flex; align-items: center; padding: 15px; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface);">
+            <img src="<%= u.avatarUrl %>" alt="Avatar" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-right: 15px;">
+            <div>
+                <strong style="font-size: 1.1rem;"><%= u.displayName %></strong>
+                <p style="margin: 0; font-size: 0.9rem;"><%= u.city %></p>
+                <a href="/users/<%= u._id %>">View Profile</a>
+            </div>
+        </div>
+    <% }) %>
+</div>

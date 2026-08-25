@@ -1,0 +1,20 @@
+<div style="text-align: center; padding: 2rem; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface);">
+    <img src="<%= user.avatarUrl %>" alt="Avatar" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin-bottom: 15px;">
+    <h1><%= user.displayName %></h1>
+    <p><strong>Username:</strong> @<%= user.username %></p>
+    <p><strong>City:</strong> <%= user.city %></p>
+    
+    <% if (user.interests && user.interests.length > 0) { %>
+        <p><strong>Interests:</strong> <%= user.interests.join(", ") %></p>
+    <% } %>
+
+    <!-- אם המשתמש צופה בפרופיל של עצמו, נציג לו אפשרויות עריכה/מחיקה -->
+    <% if (user._id.toString() === currentUserId) { %>
+        <hr>
+        <div class="post-actions" style="justify-content: center;">
+            <a href="/profile/edit" class="login-btn" style="background: var(--primary); color: white; padding: 8px 16px; border-radius: 8px;">Edit Profile</a>
+        </div>
+    <% } %>
+</div>
+<br>
+<a href="/users">Back to Users</a>

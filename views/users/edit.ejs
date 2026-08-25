@@ -1,0 +1,19 @@
+<div style="max-width: 600px; margin: 0 auto; padding: 2rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md);">
+    <h1 style="text-align: center;">Edit Profile</h1>
+    
+    <form action="/profile/edit" method="POST">
+        <label for="displayName"><strong>Display Name:</strong></label><br>
+        <input type="text" id="displayName" name="displayName" value="<%= user.displayName %>" required style="width: 100%; padding: 8px; margin-bottom: 15px;">
+
+        <label for="city"><strong>City:</strong></label><br>
+        <input type="text" id="city" name="city" value="<%= user.city %>" required style="width: 100%; padding: 8px; margin-bottom: 15px;">
+
+        <label for="interests"><strong>Interests (comma separated):</strong></label><br>
+        <input type="text" id="interests" name="interests" value="<%= user.interests ? user.interests.join(', ') : '' %>" style="width: 100%; padding: 8px; margin-bottom: 25px;">
+
+        <div style="display: flex; gap: 15px; justify-content: center;">
+            <button type="submit" style="background: var(--primary); color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem;">Save Changes</button>
+            <a href="/users/<%= user._id %>" style="padding: 10px 20px; border: 1px solid var(--border); border-radius: 8px; color: var(--text); text-decoration: none;">Cancel</a>
+        </div>
+    </form>
+</div>

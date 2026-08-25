@@ -49,9 +49,27 @@ async function getAllUsers() {
         .toArray();
 }
 
+//user updates
+async function updateUser(id, updates) {
+  const db = getDB();
+  await db.collection("users").updateOne(
+    { _id: new ObjectId(id) },
+    {
+      $set: {
+        ...updates,
+        updatedAt: new Date()
+      }
+    }
+  );
+  return getUserById(id);
+}
+
+
+
 module.exports = {
     createUser,
     getUserById,
     getUserByUsername,
-    getAllUsers
+    getAllUsers,
+    updateUser
 };

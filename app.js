@@ -9,6 +9,7 @@ const { connectDB } = require("./config/database");
 
 const authRoutes = require("./routes/authRoutes");
 const postRoutes = require("./routes/postRoutes");
+const userRoutes = require("./routes/userRoutes");
 
 const app = express();
 const PORT = 3001;
@@ -41,7 +42,7 @@ app.use(
 //Routes
 app.use("/", authRoutes);
 app.use("/", postRoutes);
-
+app.use("/", userRoutes);
 
 //Start server
 async function startServer() {
