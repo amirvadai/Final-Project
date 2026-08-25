@@ -1,16 +1,21 @@
 <nav>
-    <a href="/" id="navbar-home-btn">City Community</a>
-    <a href="/groups">Groups</a>
-    <a href="/users">Users</a>
-
-    <a href="/logout" id="navbar-logout">Logout</a>
-
-    <% if (locals.currentUser) { %>
+        <% if (locals.currentUser) { %>
         <div style="display: inline-flex; align-items: center;">
             <a href="/users/<%= currentUser._id %>" style="display: inline-flex; align-items: center;">
                 <img src="<%= currentUser.avatarUrl %>" alt="My Profile" class="avatar-nav">
             </a>
         </div>
     <% }%>
+    <a href="/" id="navbar-home-btn">City Community</a>
+    <a href="/groups">Groups</a>
+    <a href="/users">Users</a>
+
+        <% if (locals.currentUser) { %>
+        <a href="/posts/create">Create Post</a>
+    <% }%>
+
+    <a href="/logout" id="navbar-logout">Logout</a>
+
+
 
 </nav>
