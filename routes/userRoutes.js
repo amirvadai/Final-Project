@@ -11,5 +11,7 @@ router.get("/users/:id", requireAuth, userController.profile);
 router.get("/profile/edit", requireAuth, userController.showEditProfileForm);
 router.post("/profile/edit", requireAuth, userController.updateProfile);
 
+//delete user
+router.post("/profile/delete", requireAuth, userController.deleteAccount);
 
 module.exports = router;

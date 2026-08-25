@@ -64,6 +64,13 @@ async function updateUser(id, updates) {
   return getUserById(id);
 }
 
+//Delete user
+async function deleteUser(id) {
+  const db = getDB();
+  return db.collection("users").deleteOne({
+    _id: new ObjectId(id)
+  });
+}
 
 
 module.exports = {
@@ -71,5 +78,6 @@ module.exports = {
     getUserById,
     getUserByUsername,
     getAllUsers,
-    updateUser
+    updateUser,
+    deleteUser
 };

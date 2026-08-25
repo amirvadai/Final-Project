@@ -7,7 +7,10 @@
 
     <% if (locals.currentUser) { %>
         <div style="display: inline-flex; align-items: center;">
-            <img src="<%= currentUser.avatarUrl %>" alt="My Profile">
+            <a href="/users/<%= currentUser._id %>" style="display: inline-flex; align-items: center;">
+                <img src="<%= currentUser.avatarUrl %>" alt="My Profile" class="avatar-nav">
+            </a>
         </div>
     <% }%>
+
 </nav>

@@ -61,10 +61,25 @@ async function updateProfile(req, res) {
   }
 }
 
+//Delete user
+async function deleteAccount(req, res) {
+  try {
+    await userModel.deleteUser(req.session.userId);
+    
+    req.session.destroy(() => {
+      res.redirect("/register");
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server error");
+  }
+}
+
 
 module.exports = {
   list,
   profile,
   showEditProfileForm,
-  updateProfile
+  updateProfile,
+  deleteAccount
 };

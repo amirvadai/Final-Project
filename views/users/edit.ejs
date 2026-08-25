@@ -16,4 +16,13 @@
             <a href="/users/<%= user._id %>" style="padding: 10px 20px; border: 1px solid var(--border); border-radius: 8px; color: var(--text); text-decoration: none;">Cancel</a>
         </div>
     </form>
+    <hr style="margin: 40px 0 20px;">
+    
+    <div style="text-align: center;">
+        <form action="/profile/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone!');">
+            <button type="submit" style="background: var(--danger); color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem;">
+                Delete My Account
+            </button>
+        </form>
+    </div>
 </div>
