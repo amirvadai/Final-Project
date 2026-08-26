@@ -10,10 +10,6 @@
     <a href="/groups">Groups</a>
     <a href="/users">Users</a>
 
-        <% if (locals.currentUser) { %>
-        <a href="/posts/create">Create Post</a>
-    <% }%>
-
     <% if (locals.currentUser) { %>
     <a href="/logout" id="navbar-logout">Logout</a>
     <% } %>

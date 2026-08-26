@@ -211,7 +211,9 @@ async function showEditProfileForm(req, res) {
 
 async function updateProfile(req, res) {
     try {
-        const { displayName, city, interests, accountPrivacy } = req.body;
+        const { displayName, city, interests, accountPrivacy, removeAvatar } = req.body;
+        const file = req.file; 
+        
         const currentUser = await loadCurrentUser(req);
 
         if (!currentUser) {
@@ -233,10 +235,14 @@ async function updateProfile(req, res) {
             interests: interestsArray
         };
 
-        // If an older local edit form does not send this field, preserve
-        // the user's existing setting instead of accidentally making them public.
         if (accountPrivacy === "public" || accountPrivacy === "private") {
             updates.isPrivate = accountPrivacy === "private";
+        }
+
+        if (file) {
+            updates.avatarUrl = "/uploads/" + file.filename;
+        } else if (removeAvatar === "true") {
+            updates.avatarUrl = "/images/default-avatar.png";
         }
 
         await userModel.updateUser(req.session.userId, updates);
@@ -384,6 +390,7 @@ async function deleteAccount(req, res) {
         res.status(500).send("Server error");
     }
 }
+
 
 module.exports = {
     list,

@@ -61,28 +61,9 @@ nav + hr {
 nav img{
     border-radius: 50%;
     width:2.6rem;
-
+    height:2.6rem;
 }
 
-nav a[href="/posts/create"]{
-    display: inline-flex;
-    min-height: 42px;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 0.25rem;
-    padding: 0.5rem 1rem;
-    border-radius: 10px;
-    color: white;
-    background: var(--primary);
-    box-shadow:
-        0 5px 12px rgba(37, 99, 235, 0.18);
-    margin-left: auto;
-}
-
-a[href="/posts/create"]:hover {
-    background: var(--primary-dark);
-    text-decoration: none;
-}
 
 /* Main Page */
 

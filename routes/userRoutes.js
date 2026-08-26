@@ -5,6 +5,21 @@ const requireAuth = require("../Middleware/requireAuth");
 
 const router = express.Router();
 
+const multer = require("multer");
+const path = require("path");
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, "../public/uploads"));
+  },
+  filename: function (req, file, cb) {
+    const uniqueName = Date.now() + "-" + Math.round(Math.random() * 1E9);
+    cb(null, "avatar-" + uniqueName + path.extname(file.originalname)); 
+  }
+});
+
+const upload = multer({ storage: storage });
+
 // Users area tabs
 router.get("/users", requireAuth, userController.list);
 router.get("/users/friends", requireAuth, userController.friends);
@@ -19,6 +34,7 @@ router.get(
 router.post(
     "/profile/edit",
     requireAuth,
+    upload.single("avatar"),
     userController.updateProfile
 );
 router.post(
@@ -57,5 +73,6 @@ router.post(
 // Keep this after /users/friends and /users/requests, otherwise "friends"
 // and "requests" would be interpreted as user IDs.
 router.get("/users/:id", requireAuth, userController.profile);
+
 
 module.exports = router;

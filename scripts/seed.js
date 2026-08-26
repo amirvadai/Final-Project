@@ -27,7 +27,7 @@ async function seed() {
 
         const daniel = await userModel.createUser({
             username: "daniel",
-            passwordHash: "passwordHash",
+            passwordHash: passwordHash,
             displayName: "Daniel Cohen",
             city: "Tel Aviv",
             interests: ["Running", "Music", "Travel"],
@@ -36,7 +36,7 @@ async function seed() {
 
         const maya = await userModel.createUser({
             username: "maya",
-            passwordHash: "passwordHash",
+            passwordHash: passwordHash,
             displayName: "Maya Levi",
             city: "Jerusalem",
             interests: ["Photography", "Art", "Travel"],
@@ -45,7 +45,7 @@ async function seed() {
 
         const noam = await userModel.createUser({
             username: "noam",
-            passwordHash: "passwordHash",
+            passwordHash: passwordHash,
             displayName: "Noam David",
             city: "Haifa",
             interests: ["Gaming", "Technology"],

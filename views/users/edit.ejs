@@ -5,8 +5,51 @@
             <h1>Edit Profile</h1>
             <p>Update your public information and choose who can see your profile.</p>
         </div>
+        <br>
+        <form class="profile-edit-form" action="/profile/edit" method="POST" enctype="multipart/form-data">
 
-        <form class="profile-edit-form" action="/profile/edit" method="POST">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <label for="avatar" class="avatar-upload-container">
+                    <img src="<%= user.avatarUrl %>" alt="Profile Picture" class="avatar-edit-img" id="avatarPreview">
+
+                    <div class="avatar-hover-overlay">
+                        <span>Change</span>
+                    </div>
+                    <input type="file" id="avatar" name="avatar" accept="image/*" style="display: none;">
+                </label>
+    
+    <br>
+    
+    <input type="hidden" name="removeAvatar" id="removeAvatarInput" value="false">
+    
+    <button type="button" id="removeAvatarBtn" style="margin-top: 10px; background: transparent; color: var(--danger); border: none; cursor: pointer; text-decoration: underline; font-weight: 500;">
+        Remove Picture
+    </button>
+</div>
+
+<script>
+    const avatarInput = document.getElementById('avatar');
+    const avatarPreview = document.getElementById('avatarPreview');
+    const removeAvatarBtn = document.getElementById('removeAvatarBtn');
+    const removeAvatarInput = document.getElementById('removeAvatarInput');
+    
+    const defaultAvatarUrl = "/images/default-avatar.png"; 
+
+    avatarInput.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            avatarPreview.src = URL.createObjectURL(file);
+            removeAvatarInput.value = "false";
+        }
+    });
+
+    removeAvatarBtn.addEventListener('click', function() {
+        avatarPreview.src = defaultAvatarUrl;
+        avatarInput.value = "";
+        removeAvatarInput.value = "true";
+    });
+</script>
+
             <div class="profile-form-field">
                 <label for="displayName">Display name</label>
                 <input
