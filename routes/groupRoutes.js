@@ -4,7 +4,7 @@ const path = require("path");
 const multer = require("multer");
 
 const groupController = require("../controllers/groupController");
-const requireAuth = require("../middleware/requireAuth");
+const requireAuth = require("../Middleware/requireAuth");
 
 const router = express.Router();
 

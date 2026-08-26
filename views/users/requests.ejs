@@ -1,0 +1,82 @@
+<section class="people-page">
+    <div class="people-heading">
+        <div>
+            <span class="friends-eyebrow">Connections</span>
+            <h1>Friend Requests</h1>
+            <p>Manage requests you received and requests you sent.</p>
+        </div>
+    </div>
+
+    <%- include("_tabs", { activeTab, incomingRequestCount }) %>
+    <%- include("_status", { status }) %>
+
+    <section class="request-section">
+        <div class="request-section-heading">
+            <h2>Received</h2>
+            <span><%= incomingRequests.length %></span>
+        </div>
+
+        <% if (incomingRequests.length === 0) { %>
+            <p class="request-empty-text">You have no pending friend requests.</p>
+        <% } else { %>
+            <div class="request-list">
+                <% incomingRequests.forEach(u => { %>
+                    <article class="request-card">
+                        <a href="/users/<%= u._id %>">
+                            <img
+                                class="request-avatar"
+                                src="<%= u.avatarUrl || '/images/default-avatar.png' %>"
+                                alt="<%= u.displayName %>'s avatar"
+                            >
+                        </a>
+
+                        <div class="request-person">
+                            <a class="person-name" href="/users/<%= u._id %>"><%= u.displayName %></a>
+                            <span>@<%= u.username %></span>
+                        </div>
+
+                        <%- include("_friendAction", {
+                            u,
+                            returnTo: "/users/requests"
+                        }) %>
+                    </article>
+                <% }) %>
+            </div>
+        <% } %>
+    </section>
+
+    <section class="request-section">
+        <div class="request-section-heading">
+            <h2>Sent</h2>
+            <span><%= outgoingRequests.length %></span>
+        </div>
+
+        <% if (outgoingRequests.length === 0) { %>
+            <p class="request-empty-text">You have no outgoing requests.</p>
+        <% } else { %>
+            <div class="request-list">
+                <% outgoingRequests.forEach(u => { %>
+                    <article class="request-card">
+                        <a href="/users/<%= u._id %>">
+                            <img
+                                class="request-avatar"
+                                src="<%= u.avatarUrl || '/images/default-avatar.png' %>"
+                                alt="<%= u.displayName %>'s avatar"
+                            >
+                        </a>
+
+                        <div class="request-person">
+                            <a class="person-name" href="/users/<%= u._id %>"><%= u.displayName %></a>
+                            <span>@<%= u.username %></span>
+                        </div>
+
+                        <%- include("_friendAction", {
+                            u,
+                            returnTo: "/users/requests"
+                        }) %>
+                    </article>
+                <% }) %>
+            </div>
+        <% } %>
+    </section>
+</section>

@@ -1,20 +1,93 @@
-<div style="text-align: center; padding: 2rem; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface);">
-    <img src="<%= user.avatarUrl %>" alt="Avatar" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin-bottom: 15px;">
-    <h1><%= user.displayName %></h1>
-    <p><strong>Username:</strong> @<%= user.username %></p>
-    <p><strong>City:</strong> <%= user.city %></p>
-    
-    <% if (user.interests && user.interests.length > 0) { %>
-        <p><strong>Interests:</strong> <%= user.interests.join(", ") %></p>
+<section class="profile-page">
+    <%- include("_status", { status }) %>
+
+    <article class="profile-card">
+        <div class="profile-top">
+            <img
+                class="profile-avatar"
+                src="<%= user.avatarUrl || '/images/default-avatar.png' %>"
+                alt="<%= user.displayName %>'s avatar"
+            >
+
+            <div class="profile-main">
+                <div class="profile-name-row">
+                    <div>
+                        <h1><%= user.displayName %></h1>
+                        <p class="profile-username">@<%= user.username %></p>
+                    </div>
+
+                    <span class="privacy-badge <%= user.isPrivate ? 'is-private' : 'is-public' %>">
+                        <%= user.isPrivate ? 'Private account' : 'Public account' %>
+                    </span>
+                </div>
+
+                <% if (!user.relationship.isSelf) { %>
+                    <p class="profile-friend-count">
+                        <strong><%= (user.friends || []).length %></strong>
+                        friend<%= (user.friends || []).length === 1 ? '' : 's' %>
+                    </p>
+
+                    <%- include("_friendAction", {
+                        u: user,
+                        returnTo: `/users/${user._id}`
+                    }) %>
+                <% } else { %>
+                    <div class="profile-owner-block">
+                        <p class="profile-friend-count">
+                            <strong><%= (user.friends || []).length %></strong>
+                            friend<%= (user.friends || []).length === 1 ? '' : 's' %>
+                        </p>
+
+                        <div class="profile-owner-actions">
+                            <a class="friend-btn friend-btn-link" href="/profile/edit">Edit profile & privacy</a>
+                            <a class="friend-btn friend-btn-secondary friend-btn-link" href="/users/friends">My friends</a>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+
+        <% if (user.relationship.profileVisible) { %>
+            <div class="profile-details">
+                <div class="profile-detail">
+                    <span>City</span>
+                    <strong><%= user.city || 'Not set' %></strong>
+                </div>
+
+                <div class="profile-detail">
+                    <span>Interests</span>
+                    <strong>
+                        <%= user.interests && user.interests.length > 0
+                            ? user.interests.join(', ')
+                            : 'Not set' %>
+                    </strong>
+                </div>
+            </div>
+        <% } else { %>
+            <div class="private-profile-message">
+                <div class="private-lock" aria-hidden="true">🔒</div>
+                <div>
+                    <h2>This account is private</h2>
+                    <p>Become friends with <%= user.displayName %> to see their profile details and posts.</p>
+                </div>
+            </div>
+        <% } %>
+    </article>
+
+    <% if (user.relationship.profileVisible) { %>
+        <section class="profile-posts">
+            <div class="profile-posts-heading">
+                <h2><%= user.relationship.isSelf ? 'My posts' : `${user.displayName}'s posts` %></h2>
+            </div>
+
+            <%- include("../feed/_posts", {
+                posts,
+                userId: currentUserId,
+                returnTo: `/users/${user._id}`,
+                emptyMessage: "No posts to show yet."
+            }) %>
+        </section>
     <% } %>
 
-    <!-- אם המשתמש צופה בפרופיל של עצמו, נציג לו אפשרויות עריכה/מחיקה -->
-    <% if (user._id.toString() === currentUserId) { %>
-        <hr>
-        <div class="post-actions" style="justify-content: center;">
-            <a href="/profile/edit" class="login-btn" style="background: var(--primary); color: white; padding: 8px 16px; border-radius: 8px;">Edit Profile</a>
-        </div>
-    <% } %>
-</div>
-<br>
-<a href="/users">Back to Users</a>
+    <a class="back-people-link" href="/users">← Back to Users</a>
+</section>

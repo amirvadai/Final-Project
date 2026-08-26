@@ -1,9 +1,9 @@
 <section class="social-feed-page">
     <div class="feed-heading">
         <div>
-            <span class="friends-eyebrow">City Community</span>
-            <h1>Community Feed</h1>
-            <p>Public posts plus posts from your private-account friends.</p>
+            <span class="friends-eyebrow">Your network</span>
+            <h1>Friends Feed</h1>
+            <p>Posts only from people on your friends list.</p>
         </div>
 
         <a class="friend-btn friend-btn-link" href="/posts/create">Create post</a>
@@ -14,7 +14,7 @@
     <%- include("_posts", {
         posts,
         userId,
-        returnTo: "/",
-        emptyMessage: "No community posts are visible yet."
+        returnTo: "/feed/friends",
+        emptyMessage: "Your friends have not posted anything yet. Add friends or check back later."
     }) %>
 </section>

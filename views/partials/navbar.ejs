@@ -14,7 +14,9 @@
         <a href="/posts/create">Create Post</a>
     <% }%>
 
+    <% if (locals.currentUser) { %>
     <a href="/logout" id="navbar-logout">Logout</a>
+    <% } %>
 
 
 

@@ -1,28 +1,94 @@
-<div style="max-width: 600px; margin: 0 auto; padding: 2rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md);">
-    <h1 style="text-align: center;">Edit Profile</h1>
-    
-    <form action="/profile/edit" method="POST">
-        <label for="displayName"><strong>Display Name:</strong></label><br>
-        <input type="text" id="displayName" name="displayName" value="<%= user.displayName %>" required style="width: 100%; padding: 8px; margin-bottom: 15px;">
-
-        <label for="city"><strong>City:</strong></label><br>
-        <input type="text" id="city" name="city" value="<%= user.city %>" required style="width: 100%; padding: 8px; margin-bottom: 15px;">
-
-        <label for="interests"><strong>Interests (comma separated):</strong></label><br>
-        <input type="text" id="interests" name="interests" value="<%= user.interests ? user.interests.join(', ') : '' %>" style="width: 100%; padding: 8px; margin-bottom: 25px;">
-
-        <div style="display: flex; gap: 15px; justify-content: center;">
-            <button type="submit" style="background: var(--primary); color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem;">Save Changes</button>
-            <a href="/users/<%= user._id %>" style="padding: 10px 20px; border: 1px solid var(--border); border-radius: 8px; color: var(--text); text-decoration: none;">Cancel</a>
+<section class="profile-edit-page">
+    <div class="profile-edit-card">
+        <div class="profile-edit-heading">
+            <span class="friends-eyebrow">Account settings</span>
+            <h1>Edit Profile</h1>
+            <p>Update your public information and choose who can see your profile.</p>
         </div>
-    </form>
-    <hr style="margin: 40px 0 20px;">
-    
-    <div style="text-align: center;">
-        <form action="/profile/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone!');">
-            <button type="submit" style="background: var(--danger); color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem;">
-                Delete My Account
-            </button>
+
+        <form class="profile-edit-form" action="/profile/edit" method="POST">
+            <div class="profile-form-field">
+                <label for="displayName">Display name</label>
+                <input
+                    type="text"
+                    id="displayName"
+                    name="displayName"
+                    value="<%= user.displayName %>"
+                    required
+                >
+            </div>
+
+            <div class="profile-form-field">
+                <label for="city">City</label>
+                <input
+                    type="text"
+                    id="city"
+                    name="city"
+                    value="<%= user.city || '' %>"
+                    required
+                >
+            </div>
+
+            <div class="profile-form-field">
+                <label for="interests">Interests</label>
+                <input
+                    type="text"
+                    id="interests"
+                    name="interests"
+                    value="<%= user.interests ? user.interests.join(', ') : '' %>"
+                    placeholder="Running, photography, gaming"
+                >
+                <small>Separate interests with commas.</small>
+            </div>
+
+            <fieldset class="privacy-choice">
+                <legend>Account privacy</legend>
+
+                <label class="privacy-option">
+                    <input
+                        type="radio"
+                        name="accountPrivacy"
+                        value="public"
+                        <%= user.isPrivate === true ? '' : 'checked' %>
+                    >
+                    <span>
+                        <strong>Public account</strong>
+                        <small>Anyone can see your profile and posts. Adding you as a friend is immediate.</small>
+                    </span>
+                </label>
+
+                <label class="privacy-option">
+                    <input
+                        type="radio"
+                        name="accountPrivacy"
+                        value="private"
+                        <%= user.isPrivate === true ? 'checked' : '' %>
+                    >
+                    <span>
+                        <strong>Private account</strong>
+                        <small>People must send a friend request before they can see your profile details and posts.</small>
+                    </span>
+                </label>
+            </fieldset>
+
+            <div class="profile-edit-actions">
+                <a class="friend-btn friend-btn-secondary friend-btn-link" href="/users/<%= user._id %>">Cancel</a>
+                <button class="friend-btn" type="submit">Save changes</button>
+            </div>
         </form>
+
+        <div class="danger-zone">
+            <h2>Delete account</h2>
+            <p>This permanently removes your account and removes you from everyone else's friend lists and requests.</p>
+
+            <form
+                class="friend-action-form"
+                action="/profile/delete"
+                method="POST"
+                onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone!');"
+            >
+                <button class="friend-btn friend-btn-danger" type="submit">Delete my account</button>
+            </form>
+        </div>
     </div>
-</div>
+</section>

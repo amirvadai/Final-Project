@@ -1,0 +1,80 @@
+<% if (posts.length === 0) { %>
+    <div class="friends-empty feed-empty">
+        <h2>Nothing here yet</h2>
+        <p><%= emptyMessage || 'No posts yet.' %></p>
+    </div>
+<% } else { %>
+    <div class="social-post-list">
+        <% posts.forEach(post => { %>
+            <% const author = post.authorDetails || null; %>
+
+            <article class="social-post">
+                <div class="social-post-header">
+                    <% if (author) { %>
+                        <a href="/users/<%= author._id %>">
+                            <img
+                                src="<%= author.avatarUrl || '/images/default-avatar.png' %>"
+                                alt="<%= author.displayName %>'s avatar"
+                                class="social-post-avatar"
+                            >
+                        </a>
+
+                        <div class="social-post-author">
+                            <div class="social-post-author-line">
+                                <a href="/users/<%= author._id %>">
+                                    <strong><%= author.displayName %></strong>
+                                </a>
+
+                                <% if (author.isPrivate === true) { %>
+                                    <span class="post-private-badge">Private</span>
+                                <% } %>
+                            </div>
+                            <span>@<%= author.username %></span>
+                        </div>
+                    <% } else { %>
+                        <div class="social-post-author">
+                            <strong>Former user</strong>
+                        </div>
+                    <% } %>
+
+                    <time class="social-post-time" datetime="<%= post.createdAt %>">
+                        <%= new Date(post.createdAt).toLocaleString() %>
+                    </time>
+                </div>
+
+                <p class="social-post-text"><%= post.text %></p>
+
+                <% if (post.type === "image" && post.mediaUrl) { %>
+                    <img
+                        class="social-post-media"
+                        src="<%= post.mediaUrl %>"
+                        alt="Post image"
+                    >
+                <% } %>
+
+                <% if (post.type === "video" && post.mediaUrl) { %>
+                    <video class="social-post-media" controls>
+                        <source src="<%= post.mediaUrl %>">
+                        Your browser does not support video.
+                    </video>
+                <% } %>
+
+                <% if (post.author && post.author.toString() === userId) { %>
+                    <div class="social-post-actions">
+                        <a href="/posts/<%= post._id %>/edit">Edit</a>
+
+                        <form
+                            class="friend-action-form"
+                            action="/posts/<%= post._id %>/delete"
+                            method="POST"
+                            onsubmit="return confirm('Delete this post?');"
+                        >
+                            <input type="hidden" name="returnTo" value="<%= returnTo %>">
+                            <button class="post-delete-btn" type="submit">Delete</button>
+                        </form>
+                    </div>
+                <% } %>
+            </article>
+        <% }) %>
+    </div>
+<% } %>

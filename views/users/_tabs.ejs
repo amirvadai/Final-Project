@@ -1,0 +1,25 @@
+<nav class="people-tabs" aria-label="People sections">
+    <a
+        href="/users"
+        class="people-tab <%= activeTab === 'discover' ? 'is-active' : '' %>"
+    >
+        Discover
+    </a>
+
+    <a
+        href="/users/friends"
+        class="people-tab <%= activeTab === 'friends' ? 'is-active' : '' %>"
+    >
+        Friends
+    </a>
+
+    <a
+        href="/users/requests"
+        class="people-tab <%= activeTab === 'requests' ? 'is-active' : '' %>"
+    >
+        Requests
+        <% if (incomingRequestCount > 0) { %>
+            <span class="request-count"><%= incomingRequestCount %></span>
+        <% } %>
+    </a>
+</nav>

@@ -1,0 +1,66 @@
+<% if (!u.relationship.isSelf) { %>
+    <div class="friend-actions">
+        <% if (u.relationship.isFriend) { %>
+            <span class="friend-state friend-state-confirmed">Friends ✓</span>
+
+            <form
+                class="friend-action-form"
+                action="/users/<%= u._id %>/friend/remove"
+                method="POST"
+                onsubmit="return confirm('Remove this person from your friends?');"
+            >
+                <input type="hidden" name="returnTo" value="<%= returnTo %>">
+                <button class="friend-btn friend-btn-secondary" type="submit">
+                    Remove friend
+                </button>
+            </form>
+
+        <% } else if (u.relationship.incomingPending) { %>
+            <form
+                class="friend-action-form"
+                action="/users/<%= u._id %>/friend/accept"
+                method="POST"
+            >
+                <input type="hidden" name="returnTo" value="<%= returnTo %>">
+                <button class="friend-btn" type="submit">Accept</button>
+            </form>
+
+            <form
+                class="friend-action-form"
+                action="/users/<%= u._id %>/friend/decline"
+                method="POST"
+            >
+                <input type="hidden" name="returnTo" value="<%= returnTo %>">
+                <button class="friend-btn friend-btn-secondary" type="submit">
+                    Decline
+                </button>
+            </form>
+
+        <% } else if (u.relationship.outgoingPending) { %>
+            <span class="friend-state">Request pending</span>
+
+            <form
+                class="friend-action-form"
+                action="/users/<%= u._id %>/friend/cancel"
+                method="POST"
+            >
+                <input type="hidden" name="returnTo" value="<%= returnTo %>">
+                <button class="friend-btn friend-btn-secondary" type="submit">
+                    Cancel
+                </button>
+            </form>
+
+        <% } else { %>
+            <form
+                class="friend-action-form"
+                action="/users/<%= u._id %>/friend"
+                method="POST"
+            >
+                <input type="hidden" name="returnTo" value="<%= returnTo %>">
+                <button class="friend-btn" type="submit">
+                    <%= u.isPrivate ? 'Send friend request' : 'Add friend' %>
+                </button>
+            </form>
+        <% } %>
+    </div>
+<% } %>

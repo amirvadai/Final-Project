@@ -1,23 +1,26 @@
 <section class="people-page">
     <div class="people-heading">
         <div>
-            <span class="friends-eyebrow">People</span>
-            <h1>Community Users</h1>
-            <p>Discover people in the community and connect with them.</p>
+            <span class="friends-eyebrow">Your network</span>
+            <h1>Friends</h1>
+            <p>People you have connected with in City Community.</p>
         </div>
+
+        <a class="friends-feed-link" href="/feed/friends">View friends feed</a>
     </div>
 
     <%- include("_tabs", { activeTab, incomingRequestCount }) %>
     <%- include("_status", { status }) %>
 
-    <% if (users.length === 0) { %>
+    <% if (friends.length === 0) { %>
         <div class="friends-empty">
-            <h2>No other users yet</h2>
-            <p>New community members will appear here.</p>
+            <h2>Your friends list is empty</h2>
+            <p>Discover community members and add someone you know.</p>
+            <a class="friend-btn friend-btn-link" href="/users">Discover people</a>
         </div>
     <% } else { %>
         <div class="people-grid">
-            <% users.forEach(u => { %>
+            <% friends.forEach(u => { %>
                 <article class="person-card">
                     <a class="person-avatar-link" href="/users/<%= u._id %>">
                         <img
@@ -41,17 +44,13 @@
                             </span>
                         </div>
 
-                        <% if (u.relationship.profileVisible) { %>
-                            <p class="person-city"><%= u.city || 'City not set' %></p>
-                        <% } else { %>
-                            <p class="person-city">Profile details are private.</p>
-                        <% } %>
+                        <p class="person-city"><%= u.city || 'City not set' %></p>
 
                         <div class="person-card-footer">
                             <a href="/users/<%= u._id %>" class="profile-link">View profile</a>
                             <%- include("_friendAction", {
                                 u,
-                                returnTo: "/users"
+                                returnTo: "/users/friends"
                             }) %>
                         </div>
                     </div>
