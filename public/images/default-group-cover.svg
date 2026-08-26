@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 600" role="img" aria-labelledby="title description">
+  <title id="title">Default City Community group cover</title>
+  <desc id="description">A blue and violet city skyline with community circles.</desc>
+
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#173da8"/>
+      <stop offset="0.52" stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#6d5ce7"/>
+    </linearGradient>
+
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#172554" stop-opacity="0.68"/>
+      <stop offset="1" stop-color="#0f172a" stop-opacity="0.92"/>
+    </linearGradient>
+
+    <radialGradient id="glow">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.42"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1600" height="600" fill="url(#sky)"/>
+  <circle cx="1325" cy="105" r="320" fill="url(#glow)"/>
+  <circle cx="235" cy="80" r="250" fill="url(#glow)" opacity="0.55"/>
+
+  <g fill="#ffffff" opacity="0.12">
+    <circle cx="180" cy="160" r="78"/>
+    <circle cx="290" cy="195" r="52"/>
+    <circle cx="1370" cy="185" r="70"/>
+    <circle cx="1260" cy="225" r="45"/>
+  </g>
+
+  <path d="M0 410 L115 410 L115 310 L205 310 L205 365 L285 365 L285 245 L390 245 L390 340 L470 340 L470 285 L565 285 L565 390 L650 390 L650 220 L785 220 L785 345 L880 345 L880 275 L975 275 L975 380 L1065 380 L1065 250 L1180 250 L1180 330 L1275 330 L1275 205 L1395 205 L1395 350 L1480 350 L1480 295 L1600 295 L1600 600 L0 600 Z" fill="url(#ground)"/>
+
+  <g fill="#bfdbfe" opacity="0.58">
+    <rect x="145" y="335" width="20" height="20" rx="3"/>
+    <rect x="315" y="275" width="20" height="20" rx="3"/>
+    <rect x="350" y="275" width="20" height="20" rx="3"/>
+    <rect x="690" y="255" width="22" height="22" rx="3"/>
+    <rect x="730" y="255" width="22" height="22" rx="3"/>
+    <rect x="1105" y="285" width="22" height="22" rx="3"/>
+    <rect x="1310" y="240" width="22" height="22" rx="3"/>
+    <rect x="1350" y="240" width="22" height="22" rx="3"/>
+  </g>
+
+  <g transform="translate(100 445)">
+    <circle cx="40" cy="40" r="38" fill="#ffffff" opacity="0.96"/>
+    <circle cx="40" cy="31" r="12" fill="#2563eb"/>
+    <path d="M18 61 C22 45, 58 45, 62 61" fill="#2563eb"/>
+
+    <circle cx="112" cy="40" r="38" fill="#ffffff" opacity="0.9"/>
+    <circle cx="112" cy="31" r="12" fill="#6d5ce7"/>
+    <path d="M90 61 C94 45, 130 45, 134 61" fill="#6d5ce7"/>
+
+    <circle cx="184" cy="40" r="38" fill="#ffffff" opacity="0.84"/>
+    <circle cx="184" cy="31" r="12" fill="#173da8"/>
+    <path d="M162 61 C166 45, 202 45, 206 61" fill="#173da8"/>
+  </g>
+
+  <text x="1380" y="515" fill="#ffffff" opacity="0.94" font-family="Arial, sans-serif" font-size="42" font-weight="700" text-anchor="end">CITY COMMUNITY</text>
+  <text x="1380" y="557" fill="#dbeafe" opacity="0.9" font-family="Arial, sans-serif" font-size="24" text-anchor="end">YOUR CITY · YOUR PEOPLE</text>
+</svg>

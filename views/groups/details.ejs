@@ -1,0 +1,460 @@
+<section class="group-detail-page">
+    <% if (status) { %>
+        <div class="group-alert group-alert-<%= status.type %>" role="status">
+            <%= status.text %>
+        </div>
+    <% } %>
+
+    <header class="group-hero">
+        <div class="group-hero-cover">
+            <img
+                src="<%= group.coverImageUrl %>"
+                alt="<%= group.name %> cover"
+                onerror="this.src='/images/default-group-cover.svg'"
+            >
+        </div>
+
+        <div class="group-hero-content">
+            <div class="group-hero-copy">
+                <div class="group-card-badges">
+                    <span class="group-badge"><%= group.category %></span>
+                    <span class="group-badge">
+                        <%= group.privacy === "private" ? "Private group" : "Public group" %>
+                    </span>
+
+                    <% if (group.viewerIsManager) { %>
+                        <span class="group-badge group-badge-manager">
+                            You manage this group
+                        </span>
+                    <% } else if (group.viewerIsMember) { %>
+                        <span class="group-badge group-badge-member">
+                            Member
+                        </span>
+                    <% } %>
+                </div>
+
+                <h1><%= group.name %></h1>
+
+                <p class="group-hero-meta">
+                    <%= group.location.city || "City not specified" %>
+                    ·
+                    <%= group.memberCount %>
+                    <%= group.memberCount === 1 ? "member" : "members" %>
+                </p>
+            </div>
+
+            <div class="group-hero-actions">
+                <% if (group.viewerIsManager) { %>
+                    <a
+                        class="group-button group-button-primary"
+                        href="/groups/<%= group._id %>/edit"
+                    >
+                        Manage group
+                    </a>
+                <% } else if (group.viewerIsMember) { %>
+                    <form
+                        class="group-action-form"
+                        action="/groups/<%= group._id %>/leave"
+                        method="POST"
+                        data-confirm="Leave this group?"
+                    >
+                        <button
+                            class="group-button group-button-secondary"
+                            type="submit"
+                        >
+                            Leave group
+                        </button>
+                    </form>
+                <% } else if (group.viewerHasRequested) { %>
+                    <span class="group-pending-button">
+                        Membership request pending
+                    </span>
+                <% } else { %>
+                    <form
+                        class="group-action-form"
+                        action="/groups/<%= group._id %>/join"
+                        method="POST"
+                    >
+                        <button
+                            class="group-button group-button-primary"
+                            type="submit"
+                        >
+                            <%= group.privacy === "private"
+                                ? "Request to join"
+                                : "Join group" %>
+                        </button>
+                    </form>
+                <% } %>
+            </div>
+        </div>
+    </header>
+
+    <div class="group-detail-layout">
+        <section class="group-feed-column">
+            <% if (group.viewerIsMember) { %>
+                <section class="group-post-composer">
+                    <div class="group-post-composer-heading">
+                        <img
+                            src="<%= currentUser.avatarUrl %>"
+                            alt=""
+                            class="group-avatar"
+                            onerror="this.src='/images/default-avatar.png'"
+                        >
+
+                        <div>
+                            <h2>Create a group post</h2>
+                            <p>Share an update, question, image, or video.</p>
+                        </div>
+                    </div>
+
+                    <form
+                        class="group-post-form"
+                        action="/groups/<%= group._id %>/posts"
+                        method="POST"
+                        enctype="multipart/form-data"
+                    >
+                        <label class="group-visually-hidden" for="groupPostText">
+                            Group post
+                        </label>
+
+                        <textarea
+                            id="groupPostText"
+                            name="text"
+                            rows="4"
+                            maxlength="3000"
+                            placeholder="Write something for <%= group.name %>..."
+                            data-character-count="#groupPostCount"
+                        ></textarea>
+
+                        <div class="group-post-form-footer">
+                            <div class="group-file-field">
+                                <label for="groupPostMedia">Photo or video</label>
+                                <input
+                                    id="groupPostMedia"
+                                    name="media"
+                                    type="file"
+                                    accept="image/*,video/*"
+                                    data-file-label="#groupPostFileName"
+                                >
+                                <small id="groupPostFileName">
+                                    Optional. Maximum file size: 50 MB.
+                                </small>
+                            </div>
+
+                            <div class="group-post-submit">
+                                <small id="groupPostCount">0 / 3000</small>
+                                <button
+                                    class="group-button group-button-primary"
+                                    type="submit"
+                                >
+                                    Publish
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+            <% } else if (group.privacy === "public") { %>
+                <div class="group-join-prompt">
+                    <h2>Join to participate</h2>
+                    <p>
+                        You can read this public group's posts, but only members
+                        can publish.
+                    </p>
+                </div>
+            <% } %>
+
+            <% if (canViewPosts) { %>
+                <div class="group-feed-heading">
+                    <div>
+                        <span class="group-kicker">Discussion</span>
+                        <h2>Recent posts</h2>
+                    </div>
+
+                    <span>
+                        <%= posts.length %>
+                        <%= posts.length === 1 ? "post" : "posts" %>
+                    </span>
+                </div>
+
+                <% if (posts.length === 0) { %>
+                    <div class="group-empty-state">
+                        <div class="group-empty-icon" aria-hidden="true">✦</div>
+                        <h3>No posts yet</h3>
+                        <p>
+                            <%= group.viewerIsMember
+                                ? "Start the first conversation in this group."
+                                : "Members have not published anything yet." %>
+                        </p>
+                    </div>
+                <% } else { %>
+                    <div class="group-post-list">
+                        <% posts.forEach(post => { %>
+                            <article class="group-post">
+                                <header class="group-post-header">
+                                    <a
+                                        class="group-post-author"
+                                        href="<%= post.authorDetails
+                                            ? '/users/' + post.authorDetails._id
+                                            : '#' %>"
+                                    >
+                                        <img
+                                            src="<%= post.authorDetails?.avatarUrl || '/images/default-avatar.png' %>"
+                                            alt=""
+                                            class="group-avatar"
+                                            onerror="this.src='/images/default-avatar.png'"
+                                        >
+
+                                        <span>
+                                            <strong>
+                                                <%= post.authorDetails?.displayName || "Former member" %>
+                                            </strong>
+                                            <time datetime="<%= post.createdAt %>">
+                                                <%= new Date(post.createdAt).toLocaleString() %>
+                                            </time>
+                                        </span>
+                                    </a>
+
+                                    <% if (post.viewerCanDelete) { %>
+                                        <form
+                                            class="group-action-form"
+                                            action="/groups/<%= group._id %>/posts/<%= post._id %>/delete"
+                                            method="POST"
+                                            data-confirm="Delete this group post?"
+                                        >
+                                            <button
+                                                class="group-text-button group-text-button-danger"
+                                                type="submit"
+                                            >
+                                                Delete
+                                            </button>
+                                        </form>
+                                    <% } %>
+                                </header>
+
+                                <% if (post.text) { %>
+                                    <p class="group-post-text"><%= post.text %></p>
+                                <% } %>
+
+                                <% if (post.type === "image" && post.mediaUrl) { %>
+                                    <img
+                                        class="group-post-media"
+                                        src="<%= post.mediaUrl %>"
+                                        alt="Image attached to group post"
+                                    >
+                                <% } %>
+
+                                <% if (post.type === "video" && post.mediaUrl) { %>
+                                    <video class="group-post-media" controls preload="metadata">
+                                        <source src="<%= post.mediaUrl %>">
+                                        Your browser does not support video.
+                                    </video>
+                                <% } %>
+                            </article>
+                        <% }) %>
+                    </div>
+                <% } %>
+            <% } else { %>
+                <section class="group-private-lock">
+                    <div class="group-private-lock-icon" aria-hidden="true">🔒</div>
+                    <h2>This group's discussion is private</h2>
+                    <p>
+                        Join the group to view posts and participate in the
+                        conversation.
+                    </p>
+                </section>
+            <% } %>
+        </section>
+
+        <aside class="group-sidebar">
+            <section class="group-sidebar-card">
+                <h2>About</h2>
+                <p class="group-about-text"><%= group.description %></p>
+
+                <dl class="group-facts">
+                    <div>
+                        <dt>Privacy</dt>
+                        <dd>
+                            <%= group.privacy === "private"
+                                ? "Only members can view posts"
+                                : "Anyone can view posts" %>
+                        </dd>
+                    </div>
+
+                    <div>
+                        <dt>City</dt>
+                        <dd><%= group.location.city || "Not specified" %></dd>
+                    </div>
+
+                    <% if (group.location.address) { %>
+                        <div>
+                            <dt>Local area</dt>
+                            <dd><%= group.location.address %></dd>
+                        </div>
+                    <% } %>
+
+                    <div>
+                        <dt>Created</dt>
+                        <dd>
+                            <%= new Date(group.createdAt).toLocaleDateString() %>
+                        </dd>
+                    </div>
+                </dl>
+            </section>
+
+            <% if (group.rules.length > 0) { %>
+                <section class="group-sidebar-card">
+                    <h2>Group rules</h2>
+
+                    <ol class="group-rules">
+                        <% group.rules.forEach(rule => { %>
+                            <li><%= rule %></li>
+                        <% }) %>
+                    </ol>
+                </section>
+            <% } %>
+
+            <section class="group-sidebar-card">
+                <div class="group-sidebar-heading">
+                    <h2>Manager</h2>
+                </div>
+
+                <% if (group.managerDetails) { %>
+                    <a
+                        class="group-person-row"
+                        href="/users/<%= group.managerDetails._id %>"
+                    >
+                        <img
+                            src="<%= group.managerDetails.avatarUrl %>"
+                            alt=""
+                            class="group-avatar"
+                            onerror="this.src='/images/default-avatar.png'"
+                        >
+                        <span>
+                            <strong><%= group.managerDetails.displayName %></strong>
+                            <small><%= group.managerDetails.city || "" %></small>
+                        </span>
+                    </a>
+                <% } else { %>
+                    <p>The manager account is no longer available.</p>
+                <% } %>
+            </section>
+
+            <% if (group.viewerIsManager && group.requestDetails.length > 0) { %>
+                <section class="group-sidebar-card group-manager-card">
+                    <div class="group-sidebar-heading">
+                        <h2>Join requests</h2>
+                        <span><%= group.requestDetails.length %></span>
+                    </div>
+
+                    <div class="group-management-list">
+                        <% group.requestDetails.forEach(user => { %>
+                            <div class="group-management-row">
+                                <a
+                                    class="group-person-row"
+                                    href="/users/<%= user._id %>"
+                                >
+                                    <img
+                                        src="<%= user.avatarUrl %>"
+                                        alt=""
+                                        class="group-avatar"
+                                        onerror="this.src='/images/default-avatar.png'"
+                                    >
+                                    <span>
+                                        <strong><%= user.displayName %></strong>
+                                        <small><%= user.city || "" %></small>
+                                    </span>
+                                </a>
+
+                                <div class="group-mini-actions">
+                                    <form
+                                        class="group-action-form"
+                                        action="/groups/<%= group._id %>/requests/<%= user._id %>/approve"
+                                        method="POST"
+                                    >
+                                        <button
+                                            class="group-mini-button group-mini-button-approve"
+                                            type="submit"
+                                        >
+                                            Approve
+                                        </button>
+                                    </form>
+
+                                    <form
+                                        class="group-action-form"
+                                        action="/groups/<%= group._id %>/requests/<%= user._id %>/reject"
+                                        method="POST"
+                                    >
+                                        <button
+                                            class="group-mini-button"
+                                            type="submit"
+                                        >
+                                            Reject
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        <% }) %>
+                    </div>
+                </section>
+            <% } %>
+
+            <section class="group-sidebar-card">
+                <div class="group-sidebar-heading">
+                    <h2>Members</h2>
+                    <span><%= group.memberCount %></span>
+                </div>
+
+                <div class="group-management-list">
+                    <% group.memberDetails.slice(0, 12).forEach(user => { %>
+                        <div class="group-management-row">
+                            <a
+                                class="group-person-row"
+                                href="/users/<%= user._id %>"
+                            >
+                                <img
+                                    src="<%= user.avatarUrl %>"
+                                    alt=""
+                                    class="group-avatar"
+                                    onerror="this.src='/images/default-avatar.png'"
+                                >
+                                <span>
+                                    <strong><%= user.displayName %></strong>
+                                    <small>
+                                        <%= user._id.toString() === group.manager.toString()
+                                            ? "Manager"
+                                            : (user.city || "Member") %>
+                                    </small>
+                                </span>
+                            </a>
+
+                            <% if (
+                                group.viewerIsManager &&
+                                user._id.toString() !== group.manager.toString()
+                            ) { %>
+                                <form
+                                    class="group-action-form"
+                                    action="/groups/<%= group._id %>/members/<%= user._id %>/remove"
+                                    method="POST"
+                                    data-confirm="Remove this person from the group?"
+                                >
+                                    <button
+                                        class="group-text-button group-text-button-danger"
+                                        type="submit"
+                                    >
+                                        Remove
+                                    </button>
+                                </form>
+                            <% } %>
+                        </div>
+                    <% }) %>
+                </div>
+
+                <% if (group.memberCount > 12) { %>
+                    <p class="group-list-note">
+                        Showing 12 of <%= group.memberCount %> members.
+                    </p>
+                <% } %>
+            </section>
+        </aside>
+    </div>
+</section>

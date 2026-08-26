@@ -1,54 +1,93 @@
 const { getDB } = require("../config/database");
 const { ObjectId } = require("mongodb");
 
-//Get all posts
-
-function getPosts() {
-  const db = getDB();
-  return db.collection("posts").aggregate([
-    { $sort: { createdAt: -1 } },
-    {
-      $lookup: {
-        from: "users",
-        localField: "author",
-        foreignField: "_id",
-        as: "authorDetails"
-      }
-    },
-    {
-      $unwind: "$authorDetails"
-    }
-  ]).toArray();
+function postsCollection() {
+    return getDB().collection("posts");
 }
 
-//Get one post
+function toObjectId(value) {
+    if (value instanceof ObjectId) {
+        return value;
+    }
+
+    return new ObjectId(value);
+}
+
+function postsWithAuthors(match, preserveMissingAuthors = false) {
+    return postsCollection().aggregate([
+        {
+            $match: match
+        },
+        {
+            $sort: {
+                createdAt: -1
+            }
+        },
+        {
+            $lookup: {
+                from: "users",
+                localField: "author",
+                foreignField: "_id",
+                as: "authorDetails"
+            }
+        },
+        {
+            $unwind: {
+                path: "$authorDetails",
+                preserveNullAndEmptyArrays: preserveMissingAuthors
+            }
+        }
+    ]);
+}
+
+// Global feed posts only. MongoDB matches both missing and null groupId
+// values with { groupId: null }.
+function getPosts() {
+    // The existing global-feed EJS expects authorDetails to exist, so
+    // deleted-author posts are omitted here, matching the original behavior.
+    return postsWithAuthors(
+        {
+            groupId: null
+        },
+        false
+    ).toArray();
+}
+
+function getPostsByGroupId(groupId) {
+    // Group templates can display "Former member", so retain posts even
+    // if their author account was deleted.
+    return postsWithAuthors(
+        {
+            groupId: toObjectId(groupId)
+        },
+        true
+    ).toArray();
+}
+
+function getRawPostsByGroupId(groupId) {
+    return postsCollection()
+        .find({
+            groupId: toObjectId(groupId)
+        })
+        .toArray();
+}
 
 async function getPostById(id) {
-    const db = getDB();
-
-    return db.collection("posts").findOne({
-        _id: new ObjectId(id)
+    return postsCollection().findOne({
+        _id: toObjectId(id)
     });
 }
 
-//Create posts
-
 async function createPost(post) {
-    const db = getDB();
+    const result = await postsCollection().insertOne(post);
 
-    const result = await db.collection("posts").insertOne(post);
-
-    return getPostById(result.insertedId.toString());
+    return getPostById(result.insertedId);
 }
 
-//Update posts
-
 async function updatePost(id, updates) {
-    const db = getDB();
-
-    await db.collection("posts").updateOne(
+    await postsCollection().updateOne(
         {
-            _id: new ObjectId(id)
+            _id: toObjectId(id)
         },
         {
             $set: {
@@ -61,21 +100,25 @@ async function updatePost(id, updates) {
     return getPostById(id);
 }
 
-//Delete posts
-
 async function deletePost(id) {
-    const db = getDB();
-
-    return db.collection("posts").deleteOne({
-        _id: new ObjectId(id)
+    return postsCollection().deleteOne({
+        _id: toObjectId(id)
     });
 }
 
+async function deletePostsByGroupId(groupId) {
+    return postsCollection().deleteMany({
+        groupId: toObjectId(groupId)
+    });
+}
 
 module.exports = {
     getPosts,
+    getPostsByGroupId,
+    getRawPostsByGroupId,
     getPostById,
     createPost,
     updatePost,
-    deletePost
+    deletePost,
+    deletePostsByGroupId
 };

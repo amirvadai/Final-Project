@@ -1,0 +1,199 @@
+<section class="group-form-page">
+    <header class="group-page-header group-page-header-narrow">
+        <div>
+            <span class="group-kicker">Start a community</span>
+            <h1>Create a group</h1>
+            <p>
+                Build a space where local residents can meet, share updates,
+                and discuss a common interest.
+            </p>
+        </div>
+    </header>
+
+    <% if (error) { %>
+        <div class="group-alert group-alert-error" role="alert">
+            <%= error %>
+        </div>
+    <% } %>
+
+    <form
+        class="group-form group-form-card"
+        action="/groups"
+        method="POST"
+        enctype="multipart/form-data"
+    >
+        <section class="group-form-section">
+            <div class="group-form-section-heading">
+                <span>1</span>
+                <div>
+                    <h2>Group identity</h2>
+                    <p>Choose a clear name, category, and cover.</p>
+                </div>
+            </div>
+
+            <div class="group-cover-editor">
+                <img
+                    id="groupCoverPreview"
+                    class="group-cover-preview"
+                    src="/images/default-group-cover.svg"
+                    alt="Group cover preview"
+                >
+
+                <div>
+                    <label for="coverImage">Cover image</label>
+                    <input
+                        id="coverImage"
+                        name="coverImage"
+                        type="file"
+                        accept="image/*"
+                        data-image-preview-input="#groupCoverPreview"
+                        data-file-label="#groupCoverFileName"
+                    >
+                    <small id="groupCoverFileName">
+                        Optional. Recommended: 1600 × 600 px, JPG, PNG, or WebP.
+                    </small>
+                </div>
+            </div>
+
+            <div class="group-form-grid">
+                <div class="group-field group-field-full">
+                    <label for="name">Group name</label>
+                    <input
+                        id="name"
+                        name="name"
+                        type="text"
+                        minlength="3"
+                        maxlength="80"
+                        value="<%= formData.name %>"
+                        placeholder="e.g. North Tel Aviv Parents"
+                        required
+                    >
+                </div>
+
+                <div class="group-field">
+                    <label for="category">Category</label>
+                    <select id="category" name="category" required>
+                        <% categories.forEach(category => { %>
+                            <option
+                                value="<%= category %>"
+                                <%= formData.category === category ? "selected" : "" %>
+                            >
+                                <%= category %>
+                            </option>
+                        <% }) %>
+                    </select>
+                </div>
+
+                <div class="group-field">
+                    <label for="privacy">Privacy</label>
+                    <select
+                        id="privacy"
+                        name="privacy"
+                        data-privacy-select
+                        required
+                    >
+                        <option
+                            value="public"
+                            <%= formData.privacy === "public" ? "selected" : "" %>
+                        >
+                            Public
+                        </option>
+                        <option
+                            value="private"
+                            <%= formData.privacy === "private" ? "selected" : "" %>
+                        >
+                            Private
+                        </option>
+                    </select>
+                    <small data-privacy-help>
+                        Anyone can view posts; only members can publish.
+                    </small>
+                </div>
+            </div>
+        </section>
+
+        <section class="group-form-section">
+            <div class="group-form-section-heading">
+                <span>2</span>
+                <div>
+                    <h2>About the group</h2>
+                    <p>Explain who the group is for and what members discuss.</p>
+                </div>
+            </div>
+
+            <div class="group-field">
+                <label for="description">Description</label>
+                <textarea
+                    id="description"
+                    name="description"
+                    minlength="10"
+                    maxlength="2000"
+                    rows="7"
+                    data-character-count="#groupDescriptionCount"
+                    placeholder="Describe the purpose of this group..."
+                    required
+                ><%= formData.description %></textarea>
+
+                <small id="groupDescriptionCount">0 / 2000</small>
+            </div>
+
+            <div class="group-field">
+                <label for="rules">Group rules</label>
+                <textarea
+                    id="rules"
+                    name="rules"
+                    rows="6"
+                    placeholder="One rule per line&#10;Be respectful&#10;Keep posts relevant&#10;Do not share private information"
+                ><%= formData.rules %></textarea>
+                <small>Optional. Add up to 10 rules, one per line.</small>
+            </div>
+        </section>
+
+        <section class="group-form-section">
+            <div class="group-form-section-heading">
+                <span>3</span>
+                <div>
+                    <h2>Location</h2>
+                    <p>Help local residents understand where the group is based.</p>
+                </div>
+            </div>
+
+            <div class="group-form-grid">
+                <div class="group-field">
+                    <label for="city">City</label>
+                    <input
+                        id="city"
+                        name="city"
+                        type="text"
+                        maxlength="100"
+                        value="<%= formData.city %>"
+                        placeholder="e.g. Tel Aviv"
+                        required
+                    >
+                </div>
+
+                <div class="group-field">
+                    <label for="address">Meeting place or neighborhood</label>
+                    <input
+                        id="address"
+                        name="address"
+                        type="text"
+                        maxlength="200"
+                        value="<%= formData.address %>"
+                        placeholder="Optional"
+                    >
+                </div>
+            </div>
+        </section>
+
+        <div class="group-form-actions">
+            <a class="group-button group-button-secondary" href="/groups">
+                Cancel
+            </a>
+
+            <button class="group-button group-button-primary" type="submit">
+                Create group
+            </button>
+        </div>
+    </form>
+</section>

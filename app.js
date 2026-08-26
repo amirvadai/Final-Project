@@ -10,26 +10,22 @@ const { connectDB } = require("./config/database");
 const authRoutes = require("./routes/authRoutes");
 const postRoutes = require("./routes/postRoutes");
 const userRoutes = require("./routes/userRoutes");
+const groupRoutes = require("./routes/groupRoutes");
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
-
-//Middleware
+// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use(express.static(path.join(__dirname, "public")));
 
-//EJS
+// EJS
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-
 app.use(expressLayouts);
 
-app.use(express.static(path.join(__dirname, "public")));
-
-//Session
+// Session
 app.use(
     session({
         secret: process.env.SESSION_SECRET,
@@ -38,13 +34,13 @@ app.use(
     })
 );
 
-
-//Routes
+// Routes
 app.use("/", authRoutes);
 app.use("/", postRoutes);
 app.use("/", userRoutes);
+app.use("/", groupRoutes);
 
-//Start server
+// Start server
 async function startServer() {
     await connectDB();
 

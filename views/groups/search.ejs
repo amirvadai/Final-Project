@@ -1,0 +1,217 @@
+<section class="groups-page">
+    <header class="group-page-header">
+        <div>
+            <span class="group-kicker">Local communities</span>
+            <h1>Groups</h1>
+            <p>
+                Find neighbors with shared interests, join local discussions,
+                or create a community of your own.
+            </p>
+        </div>
+
+        <a class="group-button group-button-primary" href="/groups/create">
+            Create group
+        </a>
+    </header>
+
+    <% if (status) { %>
+        <div class="group-alert group-alert-<%= status.type %>" role="status">
+            <%= status.text %>
+        </div>
+    <% } %>
+
+    <form class="group-search-panel" action="/groups" method="GET">
+        <div class="group-search-grid">
+            <div class="group-field">
+                <label for="groupSearch">Search</label>
+                <input
+                    id="groupSearch"
+                    name="q"
+                    type="search"
+                    value="<%= filters.q %>"
+                    placeholder="Name, topic, description..."
+                >
+            </div>
+
+            <div class="group-field">
+                <label for="groupCategory">Category</label>
+                <select id="groupCategory" name="category">
+                    <option value="">All categories</option>
+
+                    <% categories.forEach(category => { %>
+                        <option
+                            value="<%= category %>"
+                            <%= filters.category === category ? "selected" : "" %>
+                        >
+                            <%= category %>
+                        </option>
+                    <% }) %>
+                </select>
+            </div>
+
+            <div class="group-field">
+                <label for="groupCity">City</label>
+                <input
+                    id="groupCity"
+                    name="city"
+                    type="text"
+                    value="<%= filters.city %>"
+                    placeholder="e.g. Tel Aviv"
+                >
+            </div>
+        </div>
+
+        <div class="group-search-footer">
+            <label class="group-checkbox">
+                <input
+                    type="checkbox"
+                    name="mine"
+                    value="1"
+                    <%= filters.mine ? "checked" : "" %>
+                >
+                <span>Show only my groups</span>
+            </label>
+
+            <div class="group-search-actions">
+                <a class="group-button group-button-secondary" href="/groups">
+                    Clear
+                </a>
+                <button class="group-button group-button-primary" type="submit">
+                    Search
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <% if (!filters.mine && myGroups.length > 0) { %>
+        <section class="group-section">
+            <div class="group-section-heading">
+                <div>
+                    <span class="group-kicker">Quick access</span>
+                    <h2>Your groups</h2>
+                </div>
+
+                <a href="/groups?mine=1">View all</a>
+            </div>
+
+            <div class="group-card-grid group-card-grid-compact">
+                <% myGroups.slice(0, 3).forEach(group => { %>
+                    <a class="group-card" href="/groups/<%= group._id %>">
+                        <div class="group-card-cover">
+                            <img
+                                src="<%= group.coverImageUrl %>"
+                                alt="<%= group.name %> cover"
+                                onerror="this.src='/images/default-group-cover.svg'"
+                            >
+                        </div>
+
+                        <div class="group-card-body">
+                            <div class="group-card-badges">
+                                <span class="group-badge">
+                                    <%= group.category %>
+                                </span>
+
+                                <% if (group.viewerIsManager) { %>
+                                    <span class="group-badge group-badge-manager">
+                                        Managed by you
+                                    </span>
+                                <% } %>
+                            </div>
+
+                            <h3><%= group.name %></h3>
+
+                            <p class="group-card-meta">
+                                <%= group.memberCount %>
+                                <%= group.memberCount === 1 ? "member" : "members" %>
+                                ·
+                                <%= group.privacy === "private" ? "Private" : "Public" %>
+                            </p>
+                        </div>
+                    </a>
+                <% }) %>
+            </div>
+        </section>
+    <% } %>
+
+    <section class="group-section">
+        <div class="group-section-heading">
+            <div>
+                <span class="group-kicker">Discover</span>
+                <h2>
+                    <%= filters.mine ? "Groups you belong to" : "Community groups" %>
+                </h2>
+            </div>
+
+            <span class="group-result-count">
+                <%= groups.length %>
+                <%= groups.length === 1 ? "result" : "results" %>
+            </span>
+        </div>
+
+        <% if (groups.length === 0) { %>
+            <div class="group-empty-state">
+                <div class="group-empty-icon" aria-hidden="true">◎</div>
+                <h3>No matching groups</h3>
+                <p>
+                    Try a broader search or create the first group for this topic.
+                </p>
+                <a class="group-button group-button-primary" href="/groups/create">
+                    Create a group
+                </a>
+            </div>
+        <% } else { %>
+            <div class="group-card-grid">
+                <% groups.forEach(group => { %>
+                    <a class="group-card" href="/groups/<%= group._id %>">
+                        <div class="group-card-cover">
+                            <img
+                                src="<%= group.coverImageUrl %>"
+                                alt="<%= group.name %> cover"
+                                onerror="this.src='/images/default-group-cover.svg'"
+                            >
+
+                            <span class="group-privacy-pill">
+                                <%= group.privacy === "private" ? "Private" : "Public" %>
+                            </span>
+                        </div>
+
+                        <div class="group-card-body">
+                            <div class="group-card-badges">
+                                <span class="group-badge">
+                                    <%= group.category %>
+                                </span>
+
+                                <% if (group.viewerIsMember) { %>
+                                    <span class="group-badge group-badge-member">
+                                        Joined
+                                    </span>
+                                <% } else if (group.viewerHasRequested) { %>
+                                    <span class="group-badge group-badge-pending">
+                                        Request pending
+                                    </span>
+                                <% } %>
+                            </div>
+
+                            <h3><%= group.name %></h3>
+
+                            <p class="group-card-description">
+                                <%= group.description %>
+                            </p>
+
+                            <div class="group-card-footer">
+                                <span>
+                                    <%= group.location.city || "City not specified" %>
+                                </span>
+
+                                <span>
+                                    <%= group.memberCount %>
+                                    <%= group.memberCount === 1 ? "member" : "members" %>
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+                <% }) %>
+            </div>
+        <% } %>
+    </section>
+</section>

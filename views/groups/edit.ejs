@@ -1,0 +1,222 @@
+<section class="group-form-page">
+    <header class="group-page-header group-page-header-narrow">
+        <div>
+            <span class="group-kicker">Manager settings</span>
+            <h1>Edit <%= group.name %></h1>
+            <p>
+                Update the group's information, cover, privacy, and rules.
+            </p>
+        </div>
+
+        <a
+            class="group-button group-button-secondary"
+            href="/groups/<%= group._id %>"
+        >
+            Back to group
+        </a>
+    </header>
+
+    <% if (error) { %>
+        <div class="group-alert group-alert-error" role="alert">
+            <%= error %>
+        </div>
+    <% } %>
+
+    <form
+        class="group-form group-form-card"
+        action="/groups/<%= group._id %>/edit"
+        method="POST"
+        enctype="multipart/form-data"
+    >
+        <section class="group-form-section">
+            <div class="group-form-section-heading">
+                <span>1</span>
+                <div>
+                    <h2>Group identity</h2>
+                    <p>Leave the cover field empty to keep the current image.</p>
+                </div>
+            </div>
+
+            <div class="group-cover-editor">
+                <img
+                    id="groupCoverPreview"
+                    class="group-cover-preview"
+                    src="<%= group.coverImageUrl %>"
+                    alt="Current group cover"
+                    onerror="this.src='/images/default-group-cover.svg'"
+                >
+
+                <div>
+                    <label for="coverImage">Replace cover image</label>
+                    <input
+                        id="coverImage"
+                        name="coverImage"
+                        type="file"
+                        accept="image/*"
+                        data-image-preview-input="#groupCoverPreview"
+                        data-file-label="#groupCoverFileName"
+                    >
+                    <small id="groupCoverFileName">
+                        Optional. Recommended: 1600 × 600 px.
+                    </small>
+                </div>
+            </div>
+
+            <div class="group-form-grid">
+                <div class="group-field group-field-full">
+                    <label for="name">Group name</label>
+                    <input
+                        id="name"
+                        name="name"
+                        type="text"
+                        minlength="3"
+                        maxlength="80"
+                        value="<%= formData.name %>"
+                        required
+                    >
+                </div>
+
+                <div class="group-field">
+                    <label for="category">Category</label>
+                    <select id="category" name="category" required>
+                        <% categories.forEach(category => { %>
+                            <option
+                                value="<%= category %>"
+                                <%= formData.category === category ? "selected" : "" %>
+                            >
+                                <%= category %>
+                            </option>
+                        <% }) %>
+                    </select>
+                </div>
+
+                <div class="group-field">
+                    <label for="privacy">Privacy</label>
+                    <select
+                        id="privacy"
+                        name="privacy"
+                        data-privacy-select
+                        required
+                    >
+                        <option
+                            value="public"
+                            <%= formData.privacy === "public" ? "selected" : "" %>
+                        >
+                            Public
+                        </option>
+                        <option
+                            value="private"
+                            <%= formData.privacy === "private" ? "selected" : "" %>
+                        >
+                            Private
+                        </option>
+                    </select>
+                    <small data-privacy-help></small>
+                </div>
+            </div>
+        </section>
+
+        <section class="group-form-section">
+            <div class="group-form-section-heading">
+                <span>2</span>
+                <div>
+                    <h2>About and rules</h2>
+                    <p>Keep the description useful for new members.</p>
+                </div>
+            </div>
+
+            <div class="group-field">
+                <label for="description">Description</label>
+                <textarea
+                    id="description"
+                    name="description"
+                    minlength="10"
+                    maxlength="2000"
+                    rows="7"
+                    data-character-count="#groupDescriptionCount"
+                    required
+                ><%= formData.description %></textarea>
+                <small id="groupDescriptionCount">0 / 2000</small>
+            </div>
+
+            <div class="group-field">
+                <label for="rules">Group rules</label>
+                <textarea
+                    id="rules"
+                    name="rules"
+                    rows="6"
+                    placeholder="One rule per line"
+                ><%= formData.rules %></textarea>
+                <small>Optional. Add up to 10 rules, one per line.</small>
+            </div>
+        </section>
+
+        <section class="group-form-section">
+            <div class="group-form-section-heading">
+                <span>3</span>
+                <div>
+                    <h2>Location</h2>
+                    <p>Update the city or local meeting area.</p>
+                </div>
+            </div>
+
+            <div class="group-form-grid">
+                <div class="group-field">
+                    <label for="city">City</label>
+                    <input
+                        id="city"
+                        name="city"
+                        type="text"
+                        maxlength="100"
+                        value="<%= formData.city %>"
+                        required
+                    >
+                </div>
+
+                <div class="group-field">
+                    <label for="address">Meeting place or neighborhood</label>
+                    <input
+                        id="address"
+                        name="address"
+                        type="text"
+                        maxlength="200"
+                        value="<%= formData.address %>"
+                    >
+                </div>
+            </div>
+        </section>
+
+        <div class="group-form-actions">
+            <a
+                class="group-button group-button-secondary"
+                href="/groups/<%= group._id %>"
+            >
+                Cancel
+            </a>
+
+            <button class="group-button group-button-primary" type="submit">
+                Save changes
+            </button>
+        </div>
+    </form>
+
+    <section class="group-danger-zone">
+        <div>
+            <h2>Delete group</h2>
+            <p>
+                This permanently deletes the group and all posts published in it.
+            </p>
+        </div>
+
+        <form
+            class="group-action-form"
+            action="/groups/<%= group._id %>/delete"
+            method="POST"
+            data-confirm="Delete this group and every post inside it? This cannot be undone."
+        >
+            <button class="group-button group-button-danger" type="submit">
+                Delete group
+            </button>
+        </form>
+    </section>
+</section>
