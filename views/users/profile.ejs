@@ -22,26 +22,22 @@
                 </div>
 
                 <% if (!user.relationship.isSelf) { %>
-                    <p class="profile-friend-count">
-                        <strong><%= (user.friends || []).length %></strong>
-                        friend<%= (user.friends || []).length === 1 ? '' : 's' %>
-                    </p>
-
                     <%- include("_friendAction", {
                         u: user,
-                        returnTo: `/users/${user._id}`
+                        returnTo: `/users/${user._id}`,
+                        showFriendCount: true
                     }) %>
                 <% } else { %>
-                    <div class="profile-owner-block">
-                        <p class="profile-friend-count">
+                    <div class="profile-owner-actions">
+                        <div class="profile-friend-count-inline">
                             <strong><%= (user.friends || []).length %></strong>
-                            friend<%= (user.friends || []).length === 1 ? '' : 's' %>
-                        </p>
+                            <span>
+                                friend<%= (user.friends || []).length === 1 ? '' : 's' %>
+                            </span>
+                        </div>
 
-                        <div class="profile-owner-actions">
                             <a class="friend-btn friend-btn-link" href="/profile/edit">Edit profile & privacy</a>
                             <a class="friend-btn friend-btn-secondary friend-btn-link" href="/users/friends">My friends</a>
-                        </div>
                     </div>
                 <% } %>
             </div>

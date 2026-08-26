@@ -415,23 +415,6 @@
     margin: .75rem 0 1rem;
 }
 
-/*
-   On your own profile, keep the friend count directly above
-   the profile action buttons instead of letting it float in
-   the open space beside the avatar.
-*/
-.profile-owner-block {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: .55rem;
-    margin-top: .75rem;
-}
-
-.profile-owner-block .profile-friend-count {
-    margin: 0;
-}
-
 .profile-details {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -653,6 +636,43 @@
     border-top: 1px solid var(--border);
 }
 
+
+
+.profile-main > .friend-actions {
+    align-items: flex-start;
+}
+
+.profile-owner-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 0.6rem;
+}
+
+.profile-owner-actions .profile-friend-count-inline {
+    flex: 0 0 100%;
+}
+
+.profile-friend-count-inline {
+    display: flex;
+    flex: 0 0 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.1rem;
+    margin-bottom: 0.45rem;
+}
+
+.profile-friend-count-inline strong {
+    color: var(--text);
+    font-size: 1.05rem;
+}
+
+.profile-friend-count-inline span {
+    color: var(--text);
+    font-size: 1rem;
+}
+
+
 .post-delete-btn {
     min-height: auto !important;
     padding: .3rem .55rem !important;
@@ -684,6 +704,10 @@
         flex-direction: column;
     }
 
+    .profile-friend-block {
+    align-items: center;
+    }
+
     .profile-top {
         align-items: center;
         flex-direction: column;
@@ -693,10 +717,6 @@
     .profile-name-row {
         align-items: center;
         flex-direction: column;
-    }
-
-    .profile-owner-block {
-        align-items: center;
     }
 
     .profile-owner-actions,

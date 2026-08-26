@@ -1,5 +1,13 @@
 <% if (!u.relationship.isSelf) { %>
     <div class="friend-actions">
+        <% if (typeof showFriendCount !== "undefined" && showFriendCount) { %>
+            <div class="profile-friend-count-inline">
+                <strong><%= (u.friends || []).length %></strong>
+                <span>
+                    friend<%= (u.friends || []).length === 1 ? '' : 's' %>
+                </span>
+            </div>
+        <% } %>
         <% if (u.relationship.isFriend) { %>
             <span class="friend-state friend-state-confirmed">Friends ✓</span>
 
