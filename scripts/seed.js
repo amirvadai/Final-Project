@@ -463,7 +463,9 @@ async function seed() {
             group: runnersGroup._id,
             type: "text",
             text: "Running this Saturday at 08:00!",
-            tags: ["running", "telaviv"]
+            tags: ["running", "telaviv"],
+            locationName: "Tel Aviv-Yafo",
+            weather: { temp: 22, description: "clear sky", icon: "01d" }
         });
 
         await createSeedPost({
@@ -472,7 +474,9 @@ async function seed() {
             type: "image",
             text: "Great photo from our last walk.",
             mediaUrl: "/images/demo/maya-post.jpg",
-            tags: ["photography"]
+            tags: ["photography"],
+            locationName: "Jerusalem",
+            weather: { temp: 18, description: "scattered clouds", icon: "03d" }
         });
 
         await createSeedPost({
@@ -485,122 +489,133 @@ async function seed() {
         });
 
         await createSeedPost({
-        author: tom._id,
-        group: gamingGroup._id,
-        type: "text",
-        text: "Anyone playing tonight? Looking for a squad!",
-        tags: ["gaming", "multiplayer"]
-    });
+            author: tom._id,
+            group: gamingGroup._id,
+            type: "text",
+            text: "Anyone playing tonight? Looking for a squad!",
+            tags: ["gaming", "multiplayer"]
+        });
 
-    await createSeedPost({
-        author: noam._id,
-        group: gamingGroup._id,
-        type: "image",
-        text: "My new gaming setup is finally ready!",
-        mediaUrl: "/images/demo/gaming-setup.jpg",
-        tags: ["gaming", "setup"]
-    });
+        await createSeedPost({
+            author: noam._id,
+            group: gamingGroup._id,
+            type: "image",
+            text: "My new gaming setup is finally ready!",
+            mediaUrl: "/images/demo/gaming-setup.jpg",
+            tags: ["gaming", "setup"],
+            locationName: "Dizengoff Center, Tel Aviv",
+            weather: { temp: 25, description: "broken clouds", icon: "04n" }
+        });
 
-    await createSeedPost({
-        author: idan._id,
-        group: techGroup._id,
-        type: "text",
-        text: "Working on a new web development project. Excited to share it soon!",
-        tags: ["programming", "webdevelopment"]
-    });
+        await createSeedPost({
+            author: idan._id,
+            group: techGroup._id,
+            type: "text",
+            text: "Working on a new web development project. Excited to share it soon!",
+            tags: ["programming", "webdevelopment"]
+        });
 
-    await createSeedPost({
-        author: adam._id,
-        group: techGroup._id,
-        type: "text",
-        text: "What programming language are you learning right now?",
-        tags: ["programming", "technology"]
-    });
+        await createSeedPost({
+            author: adam._id,
+            group: techGroup._id,
+            type: "text",
+            text: "What programming language are you learning right now?",
+            tags: ["programming", "technology"]
+        });
 
-    await createSeedPost({
-        author: yael._id,
-        group: fitnessGroup._id,
-        type: "image",
-        text: "Great workout at the park today!",
-        mediaUrl: "/images/demo/fitness-workout.jpg",
-        tags: ["fitness", "workout"]
-    });
+        await createSeedPost({
+            author: yael._id,
+            group: fitnessGroup._id,
+            type: "image",
+            text: "Great workout at the park today!",
+            mediaUrl: "/images/demo/fitness-workout.jpg",
+            tags: ["fitness", "workout"],
+            locationName: "Independence Park, Netanya",
+            weather: { temp: 27, description: "few clouds", icon: "02d" }
+        });
 
-    await createSeedPost({
-        author: lior._id,
-        group: runnersGroup._id,
-        type: "text",
-        text: "Who is joining us for a morning run this weekend?",
-        tags: ["running", "sports"]
-    });
+        await createSeedPost({
+            author: lior._id,
+            group: runnersGroup._id,
+            type: "text",
+            text: "Who is joining us for a morning run this weekend?",
+            tags: ["running", "sports"]
+        });
 
-    await createSeedPost({
-        author: omer._id,
-        group: fitnessGroup._id,
-        type: "text",
-        text: "Don't forget to stay hydrated during your workout!",
-        tags: ["fitness", "health"]
-    });
+        await createSeedPost({
+            author: omer._id,
+            group: fitnessGroup._id,
+            type: "text",
+            text: "Don't forget to stay hydrated during your workout!",
+            tags: ["fitness", "health"]
+        });
 
-    await createSeedPost({
-        author: dana._id,
-        group: travelGroup._id,
-        type: "image",
-        text: "One of my favorite views from a recent trip.",
-        mediaUrl: "/images/demo/travel-view.jpg",
-        tags: ["travel", "nature"]
-    });
+        await createSeedPost({
+            author: dana._id,
+            group: travelGroup._id,
+            type: "image",
+            text: "One of my favorite views from a recent trip.",
+            mediaUrl: "/images/demo/travel-view.jpg",
+            tags: ["travel", "nature"],
+            locationName: "Haifa",
+            weather: { temp: 24, description: "clear sky", icon: "01d" }
+        });
 
-    await createSeedPost({
-        author: maya._id,
-        group: travelGroup._id,
-        type: "text",
-        text: "What is your favorite place to visit in Israel?",
-        tags: ["travel", "israel"]
-    });
+        await createSeedPost({
+            author: maya._id,
+            group: travelGroup._id,
+            type: "text",
+            text: "What is your favorite place to visit in Israel?",
+            tags: ["travel", "israel"]
+        });
 
-    await createSeedPost({
-        author: noa._id,
-        group: photographyGroup._id,
-        type: "image",
-        text: "Sunset photography is always worth the wait.",
-        mediaUrl: "/images/demo/sunset-photo.jpg",
-        tags: ["photography", "sunset"]
-    });
+        await createSeedPost({
+            author: noa._id,
+            group: photographyGroup._id,
+            type: "image",
+            text: "Sunset photography is always worth the wait.",
+            mediaUrl: "/images/demo/sunset-photo.jpg",
+            tags: ["photography", "sunset"],
+            locationName: "Rishon LeZion",
+            weather: { temp: 23, description: "shower rain", icon: "09n" }
+        });
 
-    await createSeedPost({
-        author: roni._id,
-        group: musicGroup._id,
-        type: "text",
-        text: "Recommend me a song that everyone should hear at least once.",
-        tags: ["music", "recommendations"]
-});
+        await createSeedPost({
+            author: roni._id,
+            group: musicGroup._id,
+            type: "text",
+            text: "Recommend me a song that everyone should hear at least once.",
+            tags: ["music", "recommendations"]
+        });
 
-    await createSeedPost({
-        author: daniel._id,
-        group: null,
-        type: "text",
-        text: "Had an amazing week! Looking forward to the weekend.",
-        tags: ["life", "weekend"]
-});
+        await createSeedPost({
+            author: daniel._id,
+            group: null,
+            type: "text",
+            text: "Had an amazing week! Looking forward to the weekend.",
+            tags: ["life", "weekend"],
+            locationName: "Tel Aviv-Yafo"
+        });
 
-    await createSeedPost({
-        author: shira._id,
-        group: null,
-        type: "image",
-        text: "Trying something new with my photography today.",
-        mediaUrl: "/images/demo/shira-photo.jpg",
-        tags: ["photography", "art"]
-});
+        await createSeedPost({
+            author: shira._id,
+            group: null,
+            type: "image",
+            text: "Trying something new with my photography today.",
+            mediaUrl: "/images/demo/shira-photo.jpg",
+            tags: ["photography", "art"]
+        });
 
-    await createSeedPost({
-        author: adam._id,
-        group: null,
-        type: "video",
-        text: "A short clip from today's training session.",
-        mediaUrl: "/videos/demo/adam-training.mp4",
-        tags: ["sports", "training"]
-});
+        await createSeedPost({
+            author: adam._id,
+            group: null,
+            type: "video",
+            text: "A short clip from today's training session.",
+            mediaUrl: "/videos/demo/adam-training.mp4",
+            tags: ["sports", "training"],
+            locationName: "Beer Sheva",
+            weather: { temp: 32, description: "clear sky", icon: "01d" }
+        });
 
         console.log("Posts created");
 
