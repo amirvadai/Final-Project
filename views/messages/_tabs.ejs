@@ -1,0 +1,14 @@
+<div class="message-tabs" role="navigation" aria-label="Messages navigation">
+    <a class="message-tab <%= activeTab === 'chats' ? 'is-active' : '' %>" href="/messages">
+        Chats
+    </a>
+    <a class="message-tab <%= activeTab === 'requests' ? 'is-active' : '' %>" href="/messages/requests">
+        Requests
+        <% if (incomingRequestCount > 0) { %>
+            <span class="message-request-count"><%= incomingRequestCount %></span>
+        <% } %>
+    </a>
+    <a class="message-tab <%= activeTab === 'new' ? 'is-active' : '' %>" href="/messages/new">
+        New message
+    </a>
+</div>

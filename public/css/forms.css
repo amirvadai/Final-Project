@@ -146,6 +146,17 @@ main h1 + form {
     margin-top: 0.5rem;
 }
 
+.login-error {
+    max-width: 540px;
+    margin-bottom: 1rem;
+    padding: 0.8rem 1rem;
+    border: 1px solid #fecaca;
+    border-radius: 10px;
+    color: #b91c1c;
+    background: #fef2f2;
+    font-weight: 600;
+}
+
 
 /*sign up button*/
 

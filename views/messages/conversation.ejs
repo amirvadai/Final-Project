@@ -1,0 +1,102 @@
+<section class="messages-page conversation-page">
+    <div class="conversation-header">
+        <a class="conversation-back" href="/messages">← Messages</a>
+        <a class="conversation-person" href="/users/<%= otherUser._id %>">
+            <img
+                class="conversation-header-avatar"
+                src="<%= otherUser.avatarUrl || '/images/default-avatar.png' %>"
+                alt="<%= otherUser.displayName %>'s avatar"
+            >
+            <div>
+                <strong><%= otherUser.displayName %></strong>
+                <span>@<%= otherUser.username %></span>
+            </div>
+        </a>
+    </div>
+
+    <%- include("_status", { status }) %>
+
+    <% if (conversation.status === "pending") { %>
+        <% if (isRecipient) { %>
+            <div class="message-request-banner">
+                <div>
+                    <strong>Message request</strong>
+                    <p>Approve this request before replying to <%= otherUser.displayName %>.</p>
+                </div>
+                <div class="message-request-actions">
+                    <form action="/messages/<%= conversation._id %>/approve" method="POST">
+                        <button class="message-btn" type="submit">Approve</button>
+                    </form>
+                    <form action="/messages/<%= conversation._id %>/decline" method="POST">
+                        <button class="message-btn message-btn-secondary" type="submit">Decline</button>
+                    </form>
+                </div>
+            </div>
+        <% } else { %>
+            <div class="message-request-banner">
+                <div>
+                    <strong>Waiting for approval</strong>
+                    <p><%= otherUser.displayName %> must approve your message request before the conversation can continue.</p>
+                </div>
+            </div>
+        <% } %>
+    <% } %>
+
+    <div class="chat-card">
+        <div class="chat-messages" id="chatMessages">
+            <% messages.forEach(message => { %>
+                <% const mine = message.senderId.toString() === currentUserId.toString(); %>
+                <div class="chat-row <%= mine ? 'is-mine' : 'is-theirs' %>">
+                    <div class="chat-bubble <%= message.mediaUrl ? 'has-media' : '' %>">
+                        <% if (message.mediaType === "image" && message.mediaUrl) { %>
+                            <a class="chat-media-link" href="<%= message.mediaUrl %>" target="_blank" rel="noopener noreferrer">
+                                <img class="chat-media-image" src="<%= message.mediaUrl %>" alt="Sent image">
+                            </a>
+                        <% } %>
+
+                        <% if (message.mediaType === "video" && message.mediaUrl) { %>
+                            <video class="chat-media-video" controls preload="metadata">
+                                <source src="<%= message.mediaUrl %>">
+                            </video>
+                        <% } %>
+
+                        <% if (message.text) { %>
+                            <p><%= message.text %></p>
+                        <% } %>
+
+                        <time><%= new Date(message.createdAt).toLocaleString() %></time>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+
+        <% if (conversation.status === "active") { %>
+            <form class="message-form chat-form" action="/messages/<%= conversation._id %>/send" method="POST" enctype="multipart/form-data">
+                <textarea
+                    id="messageText"
+                    name="text"
+                    rows="3"
+                    maxlength="2000"
+                    placeholder="Write a message..."
+                ></textarea>
+
+                <div class="message-media-picker">
+                    <label class="message-media-button" for="messageMedia">Add photo or video</label>
+                    <input
+                        class="message-media-input"
+                        id="messageMedia"
+                        name="media"
+                        type="file"
+                        accept="image/*,video/*"
+                    >
+                    <span id="messageMediaName">No media selected</span>
+                </div>
+
+                <div class="message-form-footer">
+                    <span id="messageCharacterCount">0 / 2000</span>
+                    <button class="message-btn" type="submit">Send</button>
+                </div>
+            </form>
+        <% } %>
+    </div>
+</section>

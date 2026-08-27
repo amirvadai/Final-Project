@@ -1,0 +1,43 @@
+<section class="messages-page">
+    <div class="messages-heading">
+        <div>
+            <span class="messages-eyebrow">Direct messages</span>
+            <h1>Messages</h1>
+            <p>Your private conversations with other community members.</p>
+        </div>
+        <a class="message-primary-link" href="/messages/new">New message</a>
+    </div>
+
+    <%- include("_tabs", { activeTab, incomingRequestCount }) %>
+    <%- include("_status", { status }) %>
+
+    <% if (conversations.length === 0) { %>
+        <div class="message-empty">
+            <h2>No conversations yet</h2>
+            <p>Choose someone from the community and send your first message.</p>
+            <a class="message-primary-link" href="/messages/new">Start a conversation</a>
+        </div>
+    <% } else { %>
+        <div class="conversation-list">
+            <% conversations.forEach(conversation => { %>
+                <a class="conversation-card" href="/messages/<%= conversation._id %>">
+                    <img
+                        class="conversation-avatar"
+                        src="<%= conversation.otherUser.avatarUrl || '/images/default-avatar.png' %>"
+                        alt="<%= conversation.otherUser.displayName %>'s avatar"
+                    >
+                    <div class="conversation-card-main">
+                        <div class="conversation-card-top">
+                            <strong><%= conversation.otherUser.displayName %></strong>
+                            <% if (conversation.lastMessageAt) { %>
+                                <time><%= new Date(conversation.lastMessageAt).toLocaleString() %></time>
+                            <% } %>
+                        </div>
+                        <div class="conversation-username">@<%= conversation.otherUser.username %></div>
+                        <p><%= conversation.lastMessageText || 'Conversation started' %></p>
+                    </div>
+                </a>
+            <% }) %>
+        </div>
+    <% } %>
+</section>

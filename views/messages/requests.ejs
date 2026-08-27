@@ -1,0 +1,80 @@
+<section class="messages-page">
+    <div class="messages-heading">
+        <div>
+            <span class="messages-eyebrow">Direct messages</span>
+            <h1>Message requests</h1>
+            <p>Private accounts approve a new conversation before both people can chat.</p>
+        </div>
+    </div>
+
+    <%- include("_tabs", { activeTab, incomingRequestCount }) %>
+    <%- include("_status", { status }) %>
+
+    <section class="message-request-section">
+        <div class="message-section-title">
+            <h2>Received requests</h2>
+            <span><%= incomingRequests.length %></span>
+        </div>
+
+        <% if (incomingRequests.length === 0) { %>
+            <div class="message-empty-small">You have no pending message requests.</div>
+        <% } else { %>
+            <div class="message-request-list">
+                <% incomingRequests.forEach(conversation => { %>
+                    <article class="message-request-card">
+                        <img
+                            class="conversation-avatar"
+                            src="<%= conversation.otherUser.avatarUrl || '/images/default-avatar.png' %>"
+                            alt="<%= conversation.otherUser.displayName %>'s avatar"
+                        >
+                        <div class="message-request-main">
+                            <a href="/users/<%= conversation.otherUser._id %>">
+                                <strong><%= conversation.otherUser.displayName %></strong>
+                            </a>
+                            <span>@<%= conversation.otherUser.username %></span>
+                            <p><%= conversation.lastMessageText %></p>
+                        </div>
+                        <div class="message-request-actions">
+                            <a class="message-secondary-link" href="/messages/<%= conversation._id %>">View</a>
+                            <form action="/messages/<%= conversation._id %>/approve" method="POST">
+                                <button class="message-btn" type="submit">Approve</button>
+                            </form>
+                            <form action="/messages/<%= conversation._id %>/decline" method="POST">
+                                <button class="message-btn message-btn-secondary" type="submit">Decline</button>
+                            </form>
+                        </div>
+                    </article>
+                <% }) %>
+            </div>
+        <% } %>
+    </section>
+
+    <section class="message-request-section">
+        <div class="message-section-title">
+            <h2>Sent requests</h2>
+            <span><%= outgoingRequests.length %></span>
+        </div>
+
+        <% if (outgoingRequests.length === 0) { %>
+            <div class="message-empty-small">You have no outgoing message requests.</div>
+        <% } else { %>
+            <div class="message-request-list">
+                <% outgoingRequests.forEach(conversation => { %>
+                    <a class="message-request-card message-request-card-link" href="/messages/<%= conversation._id %>">
+                        <img
+                            class="conversation-avatar"
+                            src="<%= conversation.otherUser.avatarUrl || '/images/default-avatar.png' %>"
+                            alt="<%= conversation.otherUser.displayName %>'s avatar"
+                        >
+                        <div class="message-request-main">
+                            <strong><%= conversation.otherUser.displayName %></strong>
+                            <span>@<%= conversation.otherUser.username %></span>
+                            <p><%= conversation.lastMessageText %></p>
+                        </div>
+                        <span class="message-pending-badge">Waiting for approval</span>
+                    </a>
+                <% }) %>
+            </div>
+        <% } %>
+    </section>
+</section>

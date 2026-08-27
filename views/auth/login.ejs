@@ -9,10 +9,21 @@
 
     <h1>Login</h1>
 
+    <% if (error) { %>
+        <div class="login-error">
+            <%= error %>
+        </div>
+    <% } %>
+
     <form action="/login" method="POST">
 
         <label>Username:</label>
-        <input type="text" name="username" required>
+        <input
+            type="text"
+            name="username"
+            value="<%= username || '' %>"
+            required
+        >
 
         <br><br>
 
