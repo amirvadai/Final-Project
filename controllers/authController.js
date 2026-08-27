@@ -36,18 +36,23 @@ async function register(req, res) {
 async function login(req, res) {
     const { username, password } = req.body;
 
-    const user =
-        await userModel.getUserByUsername(username);
+    const user = await userModel.getUserByUsername(username);
 
     if (!user) {
-        return res.status(401).send("Invalid username or password");
+        return res.status(401).render("auth/login", {
+            error: "Invalid username or password",
+            username
+        });
     }
 
     const passwordCorrect =
         await bcrypt.compare(password, user.passwordHash);
 
     if (!passwordCorrect) {
-        return res.status(401).send("Invalid username or password");
+        return res.status(401).render("auth/login", {
+            error: "Invalid username or password",
+            username
+        });
     }
 
     req.session.userId = user._id.toString();

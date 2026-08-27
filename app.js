@@ -12,6 +12,7 @@ const postRoutes = require("./routes/postRoutes");
 const userRoutes = require("./routes/userRoutes");
 const groupRoutes = require("./routes/groupRoutes");
 const messageRoutes = require("./routes/messageRoutes");
+const analyticsRoutes = require("./routes/analyticsRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -37,6 +38,7 @@ app.use("/", postRoutes);
 app.use("/", userRoutes);
 app.use("/", groupRoutes);
 app.use("/", messageRoutes);
+app.use("/", analyticsRoutes);
 
 async function startServer() {
     await connectDB();

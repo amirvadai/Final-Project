@@ -1,0 +1,231 @@
+<section
+    class="analytics-page"
+    data-analytics-page
+    data-default-city="<%= defaultCity %>"
+>
+    <header class="analytics-heading">
+        <div>
+            <span class="analytics-eyebrow">Community intelligence</span>
+            <h1>Analytics</h1>
+            <p>
+                Explore community activity, posting patterns, locations,
+                forecasts and weather.
+            </p>
+        </div>
+
+        <div class="analytics-controls">
+            <label for="analytics-range">Period</label>
+            <select id="analytics-range">
+                <option value="7">Last 7 days</option>
+                <option value="30" selected>Last 30 days</option>
+                <option value="90">Last 90 days</option>
+                <option value="365">Last year</option>
+            </select>
+            <button
+                type="button"
+                id="analytics-refresh"
+                class="analytics-refresh"
+            >
+                Refresh
+            </button>
+        </div>
+    </header>
+
+    <div
+        id="analytics-error"
+        class="analytics-alert"
+        role="alert"
+        hidden
+    ></div>
+
+    <section class="analytics-summary" aria-label="Community summary">
+        <article class="analytics-stat-card">
+            <span>Community members</span>
+            <strong id="summary-users">—</strong>
+            <small>Registered users</small>
+        </article>
+
+        <article class="analytics-stat-card">
+            <span>All posts</span>
+            <strong id="summary-posts">—</strong>
+            <small>Across the community</small>
+        </article>
+
+        <article class="analytics-stat-card">
+            <span>Groups</span>
+            <strong id="summary-groups">—</strong>
+            <small>Active communities</small>
+        </article>
+
+        <article class="analytics-stat-card">
+            <span>Media share</span>
+            <strong id="summary-media">—</strong>
+            <small>Images and videos in period</small>
+        </article>
+
+        <article class="analytics-stat-card">
+            <span>Next 7 days</span>
+            <strong id="summary-forecast">—</strong>
+            <small>Estimated posts</small>
+        </article>
+    </section>
+
+    <section class="analytics-dashboard-grid">
+        <article class="analytics-panel analytics-panel-wide">
+            <div class="analytics-panel-heading">
+                <div>
+                    <span class="analytics-panel-kicker">Posts</span>
+                    <h2>Activity and 7-day forecast</h2>
+                </div>
+                <span id="posts-period-label" class="analytics-panel-note"></span>
+            </div>
+            <div
+                id="posts-trend-chart"
+                class="analytics-chart analytics-chart-large"
+                role="img"
+                aria-label="Post activity and forecast chart"
+            ></div>
+        </article>
+
+        <article class="analytics-panel">
+            <div class="analytics-panel-heading">
+                <div>
+                    <span class="analytics-panel-kicker">Content</span>
+                    <h2>Post types</h2>
+                </div>
+            </div>
+            <div
+                id="post-types-chart"
+                class="analytics-chart"
+                role="img"
+                aria-label="Post type distribution chart"
+            ></div>
+        </article>
+
+        <article class="analytics-panel">
+            <div class="analytics-panel-heading">
+                <div>
+                    <span class="analytics-panel-kicker">People</span>
+                    <h2>Top contributors</h2>
+                </div>
+            </div>
+            <div
+                id="top-authors-chart"
+                class="analytics-chart"
+                role="img"
+                aria-label="Top post authors chart"
+            ></div>
+        </article>
+
+        <article class="analytics-panel analytics-panel-wide">
+            <div class="analytics-panel-heading">
+                <div>
+                    <span class="analytics-panel-kicker">Location</span>
+                    <h2>Community activity by city</h2>
+                </div>
+            </div>
+            <div
+                id="city-activity-chart"
+                class="analytics-chart analytics-chart-large"
+                role="img"
+                aria-label="Community activity by city chart"
+            ></div>
+        </article>
+
+        <article class="analytics-panel">
+            <div class="analytics-panel-heading">
+                <div>
+                    <span class="analytics-panel-kicker">Timing</span>
+                    <h2>Posting hours</h2>
+                </div>
+            </div>
+            <div
+                id="posting-hours-chart"
+                class="analytics-chart"
+                role="img"
+                aria-label="Posts by hour of day chart"
+            ></div>
+        </article>
+
+        <article class="analytics-panel">
+            <div class="analytics-panel-heading">
+                <div>
+                    <span class="analytics-panel-kicker">Groups</span>
+                    <h2>Group locations</h2>
+                </div>
+            </div>
+            <div
+                id="group-map-chart"
+                class="analytics-chart"
+                role="img"
+                aria-label="Map of group locations"
+            ></div>
+        </article>
+
+        <article class="analytics-panel analytics-panel-wide">
+            <div class="analytics-panel-heading analytics-weather-heading">
+                <div>
+                    <span class="analytics-panel-kicker">Forecast</span>
+                    <h2>7-day weather</h2>
+                    <p id="weather-location-label">
+                        Choose a city to load its forecast.
+                    </p>
+                </div>
+
+                <form id="weather-form" class="analytics-weather-form">
+                    <label for="weather-city">City</label>
+                    <input
+                        id="weather-city"
+                        name="city"
+                        type="text"
+                        value="<%= defaultCity %>"
+                        list="analytics-city-options"
+                        autocomplete="off"
+                        required
+                    >
+                    <datalist id="analytics-city-options"></datalist>
+                    <button type="submit">Load forecast</button>
+                </form>
+            </div>
+
+            <div
+                id="weather-error"
+                class="analytics-alert analytics-weather-alert"
+                role="alert"
+                hidden
+            ></div>
+
+            <div class="weather-current-grid">
+                <div class="weather-current-card">
+                    <span>Now</span>
+                    <strong id="weather-current-temperature">—</strong>
+                </div>
+                <div class="weather-current-card">
+                    <span>Conditions</span>
+                    <strong id="weather-current-condition">—</strong>
+                </div>
+                <div class="weather-current-card">
+                    <span>Feels like</span>
+                    <strong id="weather-current-feels">—</strong>
+                </div>
+                <div class="weather-current-card">
+                    <span>Wind</span>
+                    <strong id="weather-current-wind">—</strong>
+                </div>
+            </div>
+
+            <div
+                id="weather-chart"
+                class="analytics-chart analytics-chart-large"
+                role="img"
+                aria-label="Seven day weather forecast chart"
+            ></div>
+        </article>
+    </section>
+
+    <div id="analytics-tooltip" class="analytics-tooltip" hidden></div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+<script src="/js/analytics.js" defer></script>
