@@ -1,0 +1,34 @@
+<section class="messages-page">
+    <div class="messages-heading">
+        <div>
+            <span class="messages-eyebrow">Direct messages</span>
+            <h1>New message</h1>
+            <p>Public accounts can chat immediately. Private accounts receive a message request first.</p>
+        </div>
+    </div>
+
+    <%- include("_tabs", { activeTab, incomingRequestCount }) %>
+    <%- include("_status", { status }) %>
+
+    <div class="message-user-grid">
+        <% users.forEach(user => { %>
+            <article class="message-user-card">
+                <img
+                    class="message-user-avatar"
+                    src="<%= user.avatarUrl || '/images/default-avatar.png' %>"
+                    alt="<%= user.displayName %>'s avatar"
+                >
+                <div class="message-user-main">
+                    <a href="/users/<%= user._id %>"><strong><%= user.displayName %></strong></a>
+                    <span>@<%= user.username %></span>
+                    <span class="message-privacy-badge <%= user.isPrivate ? 'is-private' : 'is-public' %>">
+                        <%= user.isPrivate ? 'Private' : 'Public' %>
+                    </span>
+                </div>
+                <a class="message-primary-link" href="/messages/new/<%= user._id %>">
+                    <%= user.isPrivate ? 'Send request' : 'Message' %>
+                </a>
+            </article>
+        <% }) %>
+    </div>
+</section>

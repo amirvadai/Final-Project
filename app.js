@@ -11,21 +11,19 @@ const authRoutes = require("./routes/authRoutes");
 const postRoutes = require("./routes/postRoutes");
 const userRoutes = require("./routes/userRoutes");
 const groupRoutes = require("./routes/groupRoutes");
+const messageRoutes = require("./routes/messageRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
-// EJS
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(expressLayouts);
 
-// Session
 app.use(
     session({
         secret: process.env.SESSION_SECRET,
@@ -34,13 +32,12 @@ app.use(
     })
 );
 
-// Routes
 app.use("/", authRoutes);
 app.use("/", postRoutes);
 app.use("/", userRoutes);
 app.use("/", groupRoutes);
+app.use("/", messageRoutes);
 
-// Start server
 async function startServer() {
     await connectDB();
 

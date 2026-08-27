@@ -1,0 +1,64 @@
+<section class="messages-page message-compose-page">
+    <div class="messages-heading">
+        <div>
+            <span class="messages-eyebrow">Direct messages</span>
+            <h1>Message <%= targetUser.displayName %></h1>
+        </div>
+    </div>
+
+    <%- include("_tabs", { activeTab, incomingRequestCount }) %>
+    <%- include("_status", { status }) %>
+
+    <div class="message-compose-card">
+        <div class="message-compose-person">
+            <img
+                class="message-compose-avatar"
+                src="<%= targetUser.avatarUrl || '/images/default-avatar.png' %>"
+                alt="<%= targetUser.displayName %>'s avatar"
+            >
+            <div>
+                <strong><%= targetUser.displayName %></strong>
+                <span>@<%= targetUser.username %></span>
+            </div>
+            <span class="message-privacy-badge <%= targetUser.isPrivate ? 'is-private' : 'is-public' %>">
+                <%= targetUser.isPrivate ? 'Private account' : 'Public account' %>
+            </span>
+        </div>
+
+        <% if (targetUser.isPrivate) { %>
+            <div class="message-info-box">
+                Your first message will be sent as a request. <%= targetUser.displayName %> can read it, but must approve the request before either of you can continue the conversation.
+            </div>
+        <% } %>
+
+        <form class="message-form" action="/messages/new/<%= targetUser._id %>" method="POST" enctype="multipart/form-data">
+            <label for="messageText">Message</label>
+            <textarea
+                id="messageText"
+                name="text"
+                rows="6"
+                maxlength="2000"
+                placeholder="Write a message..."
+            ></textarea>
+
+            <div class="message-media-picker">
+                <label class="message-media-button" for="messageMedia">Add photo or video</label>
+                <input
+                    class="message-media-input"
+                    id="messageMedia"
+                    name="media"
+                    type="file"
+                    accept="image/*,video/*"
+                >
+                <span id="messageMediaName">No media selected</span>
+            </div>
+
+            <div class="message-form-footer">
+                <span id="messageCharacterCount">0 / 2000</span>
+                <button class="message-btn" type="submit">
+                    <%= targetUser.isPrivate ? 'Send message request' : 'Send message' %>
+                </button>
+            </div>
+        </form>
+    </div>
+</section>

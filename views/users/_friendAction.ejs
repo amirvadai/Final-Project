@@ -8,9 +8,9 @@
                 </span>
             </div>
         <% } %>
+
         <% if (u.relationship.isFriend) { %>
             <span class="friend-state friend-state-confirmed">Friends ✓</span>
-
             <form
                 class="friend-action-form"
                 action="/users/<%= u._id %>/friend/remove"
@@ -22,7 +22,6 @@
                     Remove friend
                 </button>
             </form>
-
         <% } else if (u.relationship.incomingPending) { %>
             <form
                 class="friend-action-form"
@@ -32,7 +31,6 @@
                 <input type="hidden" name="returnTo" value="<%= returnTo %>">
                 <button class="friend-btn" type="submit">Accept</button>
             </form>
-
             <form
                 class="friend-action-form"
                 action="/users/<%= u._id %>/friend/decline"
@@ -43,10 +41,8 @@
                     Decline
                 </button>
             </form>
-
         <% } else if (u.relationship.outgoingPending) { %>
             <span class="friend-state">Request pending</span>
-
             <form
                 class="friend-action-form"
                 action="/users/<%= u._id %>/friend/cancel"
@@ -57,7 +53,6 @@
                     Cancel
                 </button>
             </form>
-
         <% } else { %>
             <form
                 class="friend-action-form"
@@ -70,5 +65,9 @@
                 </button>
             </form>
         <% } %>
+
+        <a class="friend-btn friend-btn-secondary friend-btn-link" href="/messages/new/<%= u._id %>">
+            Message
+        </a>
     </div>
 <% } %>
