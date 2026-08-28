@@ -44,6 +44,7 @@
 
                 <p class="social-post-text"><%= post.text %></p>
 
+
                 <% if (post.type === "image" && post.mediaUrl) { %>
                     <img
                         class="social-post-media"
@@ -57,6 +58,25 @@
                         <source src="<%= post.mediaUrl %>">
                         Your browser does not support video.
                     </video>
+                <% } %>
+
+                                    <% if (post.locationName || post.weather) { %>
+                    <div class="post-meta-widget">
+                        <% if (post.locationName) { %>
+                            <span class="post-location">📍 <%= post.locationName %></span>
+                        <% } %>
+        
+                        <% if (post.weather) { %>
+                            <span class="post-weather">
+                                <img 
+                                    class="post-weather-icon" 
+                                    src="https://openweathermap.org/img/wn/<%= post.weather.icon %>.png" 
+                                    alt="<%= post.weather.description %>"
+                                >
+                                <strong><%= post.weather.temp %>°C</strong>, <%= post.weather.description %>
+                            </span>
+                        <% } %>
+                    </div>
                 <% } %>
 
                 <% if (post.author && post.author.toString() === userId) { %>

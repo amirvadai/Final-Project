@@ -1,42 +1,33 @@
 <h1>Create Post</h1>
 
-<form
-    action="/posts"
-    method="POST"
-    enctype="multipart/form-data"
->
+<form action="/posts" method="POST" enctype="multipart/form-data">
+    
+    <label for="text">Post:</label><br>
+    <textarea id="text" name="text" rows="6" cols="50" required></textarea><br><br>
 
-    <label for="text">Post:</label>
+    <label for="media">Image or Video:</label><br>
+    <input type="file" id="media" name="media" accept="image/*,video/*"><br><br>
 
-    <br>
+    <label for="locationSearch">Add Location (Optional):</label><br>
+    
+    <div class="location-search-container">
+        <div>
+            <input type="text" id="locationSearch" placeholder="Search city or place..." autocomplete="off">
+            <ul id="locationResults" class="location-results-list"></ul>
+        </div>
+        <button type="button" id="searchLocBtn">Search</button>
+    </div>
 
-    <textarea
-        id="text"
-        name="text"
-        rows="6"
-        cols="50"
-        required
-    ></textarea>
-
+    <input type="hidden" id="locationName" name="locationName">
+    <input type="hidden" id="lat" name="lat">
+    <input type="hidden" id="lon" name="lon">
+    
     <br><br>
 
-    <label for="media">Image or Video:</label>
-
-    <br>
-
-    <input
-        type="file"
-        id="media"
-        name="media"
-        accept="image/*,video/*"
-    >
-
-    <br><br>
-
-    <button type="submit">
-        Publish
-    </button>
+    <button type="submit">Publish</button>
 
 </form>
 
 <a href="/">Cancel</a>
+
+<script src="/js/createPost.js"></script>

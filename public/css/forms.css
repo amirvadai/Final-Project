@@ -192,6 +192,241 @@ main h1 + form {
     text-decoration: none;
 }
 
+.login-button {
+    display: inline-flex;
+    min-height: 42px;
+    align-items: center;
+    justify-content: center;
+    padding: 0.65rem 1rem;
+    border: 1px solid var(--primary);
+    border-radius: 10px;
+    color: var(--primary);
+    background: white;
+    font-weight: 750;
+    text-decoration: none;
+}
+
+.login-button:hover {
+    color: white;
+    background: var(--primary);
+    text-decoration: none;
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+    form {
+        padding:1.1rem;
+    }
+
+    input, textarea {
+        font-size: 16px;
+    }
+
+
+    form > button[type="submit"] {
+        width: 100%;
+    }
+
+    article form > button[type="submit"] {
+        width: auto;
+    }
+}
+/* Login, registration, create-post and delete forms */
+
+
+/* Form Container */
+
+form {
+    width: 100%;
+    max-width:540px;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+}
+
+article form {
+    width: auto;
+    max-width: none;
+    padding:0;
+    border:0;
+    background: transparent;
+    box-shadow: none;
+}
+
+
+/* Labels */
+
+label {
+    display: inline-block;
+    margin-bottom: 0.4rem;
+    color: var(--text);
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+
+/* Inputs */
+
+input, textarea, select {
+    width: 100%;
+    border: 1px solid #cfd7e2;
+    border-radius: 10px;
+    color: var(--text);
+    background: white;
+    font: inherit;
+    transition:
+    border-color 120ms ease,
+    box-shadow 120ms ease;
+}
+
+input {
+    min-height:46px;
+    padding: 0.65rem 0.8rem;
+}
+
+
+textarea {
+    min-height: 150px;
+    padding: 0.8rem;
+    line-height: 1.55;
+    resize: vertical;
+}
+
+input:hover, textarea:hover, select:hover {
+    border-color: #aeb8c6;
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: var(--primary);
+    outline:none;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+}
+
+
+input::placeholder, textarea::placeholder {
+    color: #98a2b3;
+}
+
+form br {
+    line-height:1.2;
+}
+
+
+/* Buttons */
+
+button {
+    display: inline-flex;
+    min-height: 42px;
+    align-items: center;
+    justify-content: center;
+    padding: 0.65rem 1rem;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    color: white;
+    background: var(--primary);
+    font: inherit;
+    font-weight: 750;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.18);
+    transition: transform 120ms ease, background-color 120ms ease;
+}
+
+
+button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+}
+
+
+button:active {
+    transform: translateY(0);
+}
+
+
+button:focus-visible {
+    outline:
+        3px solid rgba(37, 99, 235, 0.22);
+
+    outline-offset: 2px;
+}
+
+
+/* Delete Post Button */
+
+article form button {
+    min-height: 36px;
+    padding: 0.5rem 0.75rem;
+    color: var(--danger);
+    background: var(--danger-light);
+    border-color: #fecaca;
+    box-shadow: none;
+    font-size: 0.85rem;
+}
+
+
+article form button:hover {
+    color:white;
+    background: var(--danger);
+    border-color: var(--danger);
+}
+
+
+/* Login / Register */
+
+main h1 + form {
+    margin-top: 0.5rem;
+}
+
+.login-error {
+    max-width: 540px;
+    margin-bottom: 1rem;
+    padding: 0.8rem 1rem;
+    border: 1px solid #fecaca;
+    border-radius: 10px;
+    color: #b91c1c;
+    background: #fef2f2;
+    font-weight: 600;
+}
+
+
+/*sign up button*/
+
+.auth-alternative {
+    display: flex;
+    max-width: 540px;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.auth-alternative span {
+    color: var(--text-muted);
+}
+
+.signup-button {
+    display: inline-flex;
+    min-height: 42px;
+    align-items: center;
+    justify-content: center;
+    padding: 0.65rem 1rem;
+    border: 1px solid var(--primary);
+    border-radius: 10px;
+    color: var(--primary);
+    background: white;
+    font-weight: 750;
+    text-decoration: none;
+}
+
+.signup-button:hover {
+    color: white;
+    background: var(--primary);
+    text-decoration: none;
+}
+
 
 /* Mobile */
 
