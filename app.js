@@ -6,6 +6,9 @@ const session = require("express-session");
 const expressLayouts = require("express-ejs-layouts");
 
 const { connectDB } = require("./config/database");
+const {
+    backfillPostEnvironments
+} = require("./controllers/postController");
 
 const authRoutes = require("./routes/authRoutes");
 const postRoutes = require("./routes/postRoutes");
@@ -13,6 +16,7 @@ const userRoutes = require("./routes/userRoutes");
 const groupRoutes = require("./routes/groupRoutes");
 const messageRoutes = require("./routes/messageRoutes");
 const analyticsRoutes = require("./routes/analyticsRoutes");
+const mapRoutes = require("./routes/mapRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -39,9 +43,18 @@ app.use("/", userRoutes);
 app.use("/", groupRoutes);
 app.use("/", messageRoutes);
 app.use("/", analyticsRoutes);
+app.use("/", mapRoutes);
 
 async function startServer() {
     await connectDB();
+
+    const updatedPosts = await backfillPostEnvironments();
+
+    if (updatedPosts > 0) {
+        console.log(
+            `Added location and historical weather to ${updatedPosts} post(s).`
+        );
+    }
 
     app.listen(PORT, () => {
         console.log(`Server running on http://localhost:${PORT}`);

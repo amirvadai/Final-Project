@@ -7,7 +7,6 @@
     <div class="social-post-list">
         <% posts.forEach(post => { %>
             <% const author = post.authorDetails || null; %>
-
             <article class="social-post">
                 <div class="social-post-header">
                     <% if (author) { %>
@@ -18,13 +17,11 @@
                                 class="social-post-avatar"
                             >
                         </a>
-
                         <div class="social-post-author">
                             <div class="social-post-author-line">
                                 <a href="/users/<%= author._id %>">
                                     <strong><%= author.displayName %></strong>
                                 </a>
-
                                 <% if (author.isPrivate === true) { %>
                                     <span class="post-private-badge">Private</span>
                                 <% } %>
@@ -36,14 +33,12 @@
                             <strong>Former user</strong>
                         </div>
                     <% } %>
-
                     <time class="social-post-time" datetime="<%= post.createdAt %>">
                         <%= new Date(post.createdAt).toLocaleString() %>
                     </time>
                 </div>
 
                 <p class="social-post-text"><%= post.text %></p>
-
 
                 <% if (post.type === "image" && post.mediaUrl) { %>
                     <img
@@ -54,26 +49,40 @@
                 <% } %>
 
                 <% if (post.type === "video" && post.mediaUrl) { %>
-                    <video class="social-post-media" controls>
-                        <source src="<%= post.mediaUrl %>">
-                        Your browser does not support video.
+                    <video
+                        class="social-post-media"
+                        controls
+                        preload="metadata"
+                    >
+                        <source
+                            src="<%= post.mediaUrl %>"
+                            type="video/mp4"
+                        >
+                        <a href="<%= post.mediaUrl %>">Open video</a>
                     </video>
                 <% } %>
 
-                                    <% if (post.locationName || post.weather) { %>
+                <% if (post.locationName || post.weather) { %>
                     <div class="post-meta-widget">
                         <% if (post.locationName) { %>
-                            <span class="post-location">📍 <%= post.locationName %></span>
+                            <a
+                                class="post-location post-location-link"
+                                href="/map?post=<%= post._id %>"
+                                title="Show directions to this post location"
+                            >
+                                📍 <%= post.locationName %>
+                            </a>
                         <% } %>
-        
+
                         <% if (post.weather) { %>
                             <span class="post-weather">
-                                <img 
-                                    class="post-weather-icon" 
-                                    src="https://openweathermap.org/img/wn/<%= post.weather.icon %>.png" 
+                                <img
+                                    class="post-weather-icon"
+                                    src="https://openweathermap.org/img/wn/<%= post.weather.icon %>.png"
                                     alt="<%= post.weather.description %>"
                                 >
-                                <strong><%= post.weather.temp %>°C</strong>, <%= post.weather.description %>
+                                <strong><%= post.weather.temp %>°C</strong>,
+                                <%= post.weather.description %>
                             </span>
                         <% } %>
                     </div>
@@ -82,15 +91,23 @@
                 <% if (post.author && post.author.toString() === userId) { %>
                     <div class="social-post-actions">
                         <a href="/posts/<%= post._id %>/edit">Edit</a>
-
                         <form
                             class="friend-action-form"
                             action="/posts/<%= post._id %>/delete"
                             method="POST"
                             onsubmit="return confirm('Delete this post?');"
                         >
-                            <input type="hidden" name="returnTo" value="<%= returnTo %>">
-                            <button class="post-delete-btn" type="submit">Delete</button>
+                            <input
+                                type="hidden"
+                                name="returnTo"
+                                value="<%= returnTo %>"
+                            >
+                            <button
+                                class="post-delete-btn"
+                                type="submit"
+                            >
+                                Delete
+                            </button>
                         </form>
                     </div>
                 <% } %>

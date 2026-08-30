@@ -1,0 +1,100 @@
+<section
+    class="post-map-page"
+    data-post-map-page
+    data-google-maps-key="<%= googleMapsApiKey %>"
+    data-selected-post-id="<%= selectedPostId %>"
+>
+    <div class="feed-heading">
+        <div>
+            <span class="friends-eyebrow">City Community</span>
+            <h1>Post Map</h1>
+            <p>Explore where community posts were published.</p>
+        </div>
+    </div>
+
+    <%- include("../feed/_tabs", { activeFeed }) %>
+
+    <div class="post-map-toolbar">
+        <button
+            class="map-window-button is-active"
+            type="button"
+            data-map-last-24
+        >
+            Last 24 hours
+        </button>
+
+        <label class="map-date-control">
+            <span>Previous date</span>
+            <input type="date" data-map-date>
+        </label>
+
+        <span class="map-result-summary" data-map-summary>
+            Loading posts…
+        </span>
+    </div>
+
+    <div class="post-map-layout">
+        <section class="post-map-card">
+            <div
+                id="post-map"
+                class="post-map-canvas"
+                aria-label="Map of recent posts"
+            ></div>
+
+            <div class="post-map-message" data-map-message hidden></div>
+        </section>
+
+        <aside class="directions-panel" data-directions-panel>
+            <div class="directions-panel-empty" data-directions-empty>
+                <span class="directions-panel-icon">📍</span>
+                <h2>Choose a post</h2>
+                <p>
+                    Hover over a dot to see who posted. Select it to open
+                    driving or walking directions in Google Maps.
+                </p>
+            </div>
+
+            <div data-directions-content hidden>
+                <span class="friends-eyebrow">Google Maps directions</span>
+                <h2 data-directions-location></h2>
+                <p
+                    class="directions-post-author"
+                    data-directions-author
+                ></p>
+                <p
+                    class="directions-post-time"
+                    data-directions-time
+                ></p>
+
+                <div class="map-directions-links">
+                    <a
+                        class="map-direction-link"
+                        data-direction-driving
+                        href="#"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        🚗 Drive with Google Maps
+                    </a>
+
+                    <a
+                        class="map-direction-link map-direction-link-secondary"
+                        data-direction-walking
+                        href="#"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        🚶 Walk with Google Maps
+                    </a>
+                </div>
+
+                <p class="directions-note">
+                    Google Maps will use your current location and display
+                    the route, travel time, and estimated arrival time.
+                </p>
+            </div>
+        </aside>
+    </div>
+</section>
+
+<script src="/js/postMap.js" defer></script>

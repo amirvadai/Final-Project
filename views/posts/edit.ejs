@@ -1,64 +1,44 @@
 <h1>Edit Post</h1>
-<form action="/posts/<%= post._id %>" method="POST">
-  
-  <label for="text">Post:</label><br>
-  <textarea id="text" name="text" rows="6" cols="50" required><%= post.text %></textarea><br><br>
 
-  <label for="locationSearch">Location (Optional):</label><br>
-  <div class="location-search-container">
-      <div>
-          <input type="text" id="locationSearch" placeholder="Search city or place..." autocomplete="off" value="<%= post.locationName || '' %>">
-          <ul id="locationResults" class="location-results-list"></ul>
-      </div>
-      <button type="button" id="searchLocBtn">Search</button>
-      
-      <button type="button" id="clearLocBtn" class="btn-clear-location">Clear</button>
-  </div>
-
-  <input type="hidden" id="locationName" name="locationName" value="<%= post.locationName || '' %>">
-  <input type="hidden" id="lat" name="lat">
-  <input type="hidden" id="lon" name="lon">
-  <input type="hidden" id="removeLocation" name="removeLocation" value="false">
-  
-  <br><br>
-  <button type="submit">Save Changes</button>
-</form>
-
-<br>
-<a href="/">Cancel</a>
-
-<script src="/js/createPost.js"></script>
-<script>
-const clearLocBtn = document.getElementById('clearLocBtn');
-
-if (clearLocBtn) {
-    clearLocBtn.addEventListener('click', function() {
-        document.getElementById('locationSearch').value = '';
-        document.getElementById('locationName').value = '';
-        document.getElementById('lat').value = '';
-        document.getElementById('lon').value = '';
-
-        document.getElementById('removeLocation').value = 'true';
-    });
-}
-</script>
-<h1>Edit Post</h1>
 <form
-  action="/posts/<%= post._id %>"
-  method="POST"
+    action="/posts/<%= post._id %>"
+    method="POST"
 >
-  <label for="text">Post:</label>
-  <br>
-  <textarea
-    id="text"
-    name="text"
-    rows="6"
-    cols="50"
-    required
-  ><%= post.text %></textarea>
-  <br><br>
-  <button type="submit">Save Changes</button>
+    <label for="text">Post:</label>
+
+    <br>
+
+    <textarea
+        id="text"
+        name="text"
+        rows="6"
+        cols="50"
+        required
+    ><%= post.text %></textarea>
+
+    <% if (post.locationName && post.weather) { %>
+        <div class="post-meta-widget">
+            <span class="post-location">
+                📍 <%= post.locationName %>
+            </span>
+
+            <span class="post-weather">
+                <img
+                    class="post-weather-icon"
+                    src="https://openweathermap.org/img/wn/<%= post.weather.icon %>.png"
+                    alt="<%= post.weather.description %>"
+                >
+                <strong><%= post.weather.temp %>°C</strong>,
+                <%= post.weather.description %>
+            </span>
+        </div>
+    <% } %>
+
+    <button type="submit">
+        Save Changes
+    </button>
 </form>
 
 <br>
+
 <a href="/">Cancel</a>
