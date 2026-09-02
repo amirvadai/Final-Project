@@ -27,7 +27,6 @@
     "express-ejs-layouts": "^2.5.1",
     "express-session": "^1.19.0",
     "mongodb": "^7.5.0",
-    "multer": "^2.2.0",
-    "twitter-api-v2": "^1.29.1"
+    "multer": "^2.2.0"
   }
 }
