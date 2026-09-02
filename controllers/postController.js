@@ -1,6 +1,10 @@
 const { ObjectId } = require("mongodb");
 const { getDB } = require("../config/database");
 const postModel = require("../models/postModel");
+const {
+    sendPostToDiscord,
+    deleteDiscordMessage
+} = require("../services/discordService");
 
 const fallbackCities = [
     "Tel Aviv",
@@ -50,9 +54,6 @@ const weatherCodeMap = {
     99: ["severe thunderstorm with hail", "11d"]
 };
 
-const geocodeCache = new Map();
-const weatherCache = new Map();
-
 const locationOverrides = {
     "beit nehemia": {
         name: "Beit Nehemia",
@@ -60,6 +61,9 @@ const locationOverrides = {
         longitude: 34.953835
     }
 };
+
+const geocodeCache = new Map();
+const weatherCache = new Map();
 
 function safeReturnTo(value, fallback = "/") {
     if (
@@ -570,8 +574,10 @@ function showCreateForm(req, res) {
 }
 
 async function create(req, res) {
+    let discordMessage = null;
+
     try {
-        const { text, lat, lon, postToX } = req.body;
+        const { text, lat, lon } = req.body;
         const file = req.file;
 
         if (!text || text.trim() === "") {
@@ -604,26 +610,19 @@ async function create(req, res) {
 
         if (req.body.postToDiscord) {
             try {
-                const fs = require('fs');
-                const discordWebhookUrl = process.env.DISCORD_WEBHOOK_URL;
-                const formData = new FormData();
-
-                formData.append('content', `**A new post was uploaded to City Community!**\n**Text Content:**\n${text}`);
-
-                if (file) {
-                    const fileBuffer = fs.readFileSync(file.path);
-                    const fileBlob = new Blob([fileBuffer], { type: file.mimetype });
-                    formData.append('file', fileBlob, file.filename);
-                }
-
-                await fetch(discordWebhookUrl, {
-                    method: 'POST',
-                    body: formData
+                discordMessage = await sendPostToDiscord({
+                    text: text.trim(),
+                    file,
+                    displayName:
+                        res.locals.currentUser?.displayName ||
+                        res.locals.currentUser?.username ||
+                        "Community member"
                 });
-                
-                console.log('Post and media sent to Discord successfully!');
             } catch (error) {
-                console.error('Failed to send to Discord:', error);
+                console.error(
+                    "Failed to send post to Discord:",
+                    error
+                );
             }
         }
 
@@ -633,12 +632,30 @@ async function create(req, res) {
             text: text.trim(),
             mediaUrl,
             ...environment,
+            discordMessageId:
+                discordMessage?.messageId || null,
+            discordThreadId:
+                discordMessage?.threadId || null,
             createdAt,
             updatedAt: createdAt
         });
 
         res.redirect("/");
     } catch (error) {
+        if (discordMessage?.messageId) {
+            try {
+                await deleteDiscordMessage(
+                    discordMessage.messageId,
+                    discordMessage.threadId
+                );
+            } catch (cleanupError) {
+                console.error(
+                    "Failed to clean up Discord message:",
+                    cleanupError
+                );
+            }
+        }
+
         console.error(error);
         res.status(500).send("Server error");
     }
@@ -656,8 +673,31 @@ async function remove(req, res) {
             return res.status(403).send("Not allowed");
         }
 
+        if (post.discordMessageId) {
+            try {
+                await deleteDiscordMessage(
+                    post.discordMessageId,
+                    post.discordThreadId
+                );
+            } catch (error) {
+                console.error(
+                    "Failed to delete Discord message:",
+                    error
+                );
+
+                return res
+                    .status(502)
+                    .send(
+                        "Could not delete the Discord copy. The City Community post was not deleted."
+                    );
+            }
+        }
+
         await postModel.deletePost(req.params.id);
-        res.redirect(safeReturnTo(req.body.returnTo, "/"));
+
+        res.redirect(
+            safeReturnTo(req.body.returnTo, "/")
+        );
     } catch (error) {
         console.error(error);
         res.status(500).send("Server error");
