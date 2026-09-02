@@ -323,3 +323,24 @@ article img, article video{
     color: var(--danger-dark);
     background-color: var(--danger-light);
 }
+
+.discord-share-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    width: fit-content;
+}
+
+.discord-share-container input[type="checkbox"] {
+    margin: 0;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+
+.discord-share-container label {
+    margin: 0;
+    font-size: 14px;
+    cursor: pointer;
+}

@@ -602,6 +602,31 @@ async function create(req, res) {
             at: createdAt
         });
 
+        if (req.body.postToDiscord) {
+            try {
+                const fs = require('fs');
+                const discordWebhookUrl = process.env.DISCORD_WEBHOOK_URL;
+                const formData = new FormData();
+
+                formData.append('content', `**A new post was uploaded to City Community!**\n**Text Content:**\n${text}`);
+
+                if (file) {
+                    const fileBuffer = fs.readFileSync(file.path);
+                    const fileBlob = new Blob([fileBuffer], { type: file.mimetype });
+                    formData.append('file', fileBlob, file.filename);
+                }
+
+                await fetch(discordWebhookUrl, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                console.log('Post and media sent to Discord successfully!');
+            } catch (error) {
+                console.error('Failed to send to Discord:', error);
+            }
+        }
+
         await postModel.createPost({
             author: new ObjectId(req.session.userId),
             type,
