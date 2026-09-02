@@ -1,6 +1,7 @@
 const { ObjectId } = require("mongodb");
 const { getDB } = require("../config/database");
 const postModel = require("../models/postModel");
+const { TwitterApi } = require('twitter-api-v2');
 
 const fallbackCities = [
     "Tel Aviv",
@@ -571,7 +572,7 @@ function showCreateForm(req, res) {
 
 async function create(req, res) {
     try {
-        const { text, lat, lon } = req.body;
+        const { text, lat, lon, postToX } = req.body;
         const file = req.file;
 
         if (!text || text.trim() === "") {
@@ -601,6 +602,22 @@ async function create(req, res) {
                 req.session.userId,
             at: createdAt
         });
+
+        if (postToX === "true") {
+            try {
+                const client = new TwitterApi({
+                    appKey: process.env.TWITTER_API_KEY,
+                    appSecret: process.env.TWITTER_API_SECRET,
+                    accessToken: process.env.TWITTER_ACCESS_TOKEN,
+                    accessSecret: process.env.TWITTER_ACCESS_SECRET,
+                });
+
+                await client.v2.tweet(text.trim());
+                console.log("Successfully posted to X!");
+            } catch (xError) {
+                console.error("X API Error:", xError);
+            }
+        }
 
         await postModel.createPost({
             author: new ObjectId(req.session.userId),
